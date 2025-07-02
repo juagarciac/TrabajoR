@@ -1,0 +1,1305 @@
+---
+title: "Mapas Departamento del Tolima"
+author: 
+  - "Juan Pablo Garcia Carballo CC 1000748462"
+  - "Diego Leon Rojas Torres CC 98764896"
+  - "Valentina Rodríguez Henao CC 1000871745"
+  - ""
+date: "2025-07-01"
+lang: es
+format: 
+  pdf:
+    toc: true
+editor: source
+embed-resources: true
+execute: 
+  echo: false
+  warning: false
+---
+
+# Objetivo General
+
+Analizar y visualizar espacialmente la situación socioeconómica y fiscal de los municipios del departamento del Tolima, identificando patrones y relaciones entre variables clave para ofrecer un panorama integral de su desarrollo.
+
+# Objetivos Específicos
+
+-Representar cartográficamente la distribución de la pobreza en los municipios del Tolima, utilizando indicadores como el Índice de Pobreza Multidimensional (IPM), el Índice de Necesidades Insatisfechas (NBI) o el Índice de Desarrollo Humano (IDH), para identificar las zonas con mayor vulnerabilidad.
+
+-Generar un mapa que ilustre el Índice de Desempeño Fiscal de cada municipio del Tolima, permitiendo identificar las capacidades de gestión y autonomía financiera a nivel local.
+
+-Elaborar un mapa que muestre la distancia de cada municipio a Ibagué, la capital del departamento, para evaluar su posible influencia en el desarrollo y la accesibilidad a servicios y oportunidades.
+
+-Desarrollar el código en R o Quarto (.R/.qmd) para la extracción, procesamiento, análisis y visualización de los datos, asegurando que sea reproducible, no contenga rutas específicas y esté debidamente documentado para facilitar su comprensión y verificación.
+
+# Introducción
+
+El análisis de las dinámicas territoriales es fundamental para el diseño de políticas públicas efectivas y la promoción de un desarrollo equitativo. En este contexto, el departamento del Tolima, un territorio de gran diversidad geográfica, económica y social, presenta un mosaico de realidades a nivel municipal que a menudo quedan ocultas tras los promedios departamentales. Comprender las brechas, fortalezas y debilidades de cada uno de sus 47 municipios es, por tanto, un paso crucial para identificar las verdaderas necesidades de su población y optimizar la gestión de los recursos.
+
+El presente trabajo tiene como propósito central realizar un diagnóstico espacial integral de los municipios del Tolima, articulando variables clave de índole fiscal, social y geográfica. A través de la elaboración de mapas temáticos y el análisis de datos cuantitativos, se busca visualizar la distribución de indicadores fundamentales como el Índice de Desempeño Fiscal (IDF), el Índice de Pobreza Multidimensional (IPM) y la accesibilidad geográfica medida por la distancia a la capital, Ibagué. Estos análisis se complementan con una exploración de los resultados educativos para enriquecer la comprensión del panorama socioeconómico.
+
+Utilizando herramientas de programación como R y la plataforma Quarto para garantizar la reproducibilidad y transparencia del proceso, este informe busca no solo presentar una colección de mapas, sino también identificar patrones, correlaciones y disparidades territoriales. De esta manera, se ofrece un panorama detallado que puede servir como insumo para la toma de decisiones, la focalización de recursos y la formulación de estrategias de desarrollo regional más pertinentes y ajustadas a la heterogénea realidad tolimense.
+
+# Metodología
+
+La presente investigación adoptará un enfoque cuantitativo y descriptivo, apoyándose en la recolección, procesamiento, análisis y visualización de datos geoespaciales y socioeconómicos. La metodología se estructura en las siguientes fases:
+
+## Materiales
+
+### Fuentes de Datos:
+
+Oficiales de Colombia: Se priorizarán bases de datos y publicaciones de entidades gubernamentales como el Departamento Administrativo Nacional de Estadística (DANE), el Departamento Nacional de Planeación (DNP), el Departamento Nacional de Estadística (DANE), la Contaduría General de la Nación (CGN), y otras instituciones relevantes que publiquen información a nivel municipal.
+
+Cartografía Base: Se utilizarán archivos de límites geográficos municipales (shapefiles) del Tolima, provenientes de fuentes oficiales (ej., IGAC o DANE) para la representación espacial de los indicadores.
+
+Internet: Plataformas de datos abiertos, repositorios académicos y sitios web de organizaciones reconocidas por la calidad de su información estadística y geográfica.
+
+### Software y Herramientas:
+
+Lenguaje de Programación: R (con paquetes como tidyverse, sf, ggplot2, leaflet, rmarkdown, knitr para la manipulación, análisis y visualización de datos).
+
+Entorno de Desarrollo Integrado (IDE): RStudio.
+
+Plataforma de Control de Versiones: Git y GitHub para la gestión del código, colaboración y entrega del informe final.
+
+Herramientas de Inteligencia Artificial (IA): Aplicaciones o modelos de IA (ej., modelos de lenguaje para revisión de redacción, ortografía y generación de estructuras de texto) para optimizar la calidad del informe escrito.
+
+Hardware: Computadores personales con capacidad suficiente para el procesamiento de datos geoespaciales y la ejecución de los scripts.
+
+## Métodos
+
+-   Tipo de Estudio: Descriptivo y de análisis espacial.
+
+-   Unidad de Análisis: Los municipios del departamento del Tolima.
+
+-   Variables de Estudio:
+
+-   Pobreza: Índice de Pobreza Multidimensional (IPM), Índice de Necesidades Insatisfechas (NBI) o Índice de Desarrollo Humano (IDH) a nivel municipal. La elección final dependerá de la disponibilidad y calidad de los datos más recientes.
+
+-   Desempeño Fiscal: Índice de Desempeño Fiscal Municipal.
+
+-   Accesibilidad Geográfica: Distancia euclidiana o de ruta más corta de cada cabecera municipal a la capital del departamento (Ibagué).
+
+### Análisis de Datos:
+
+-   Estadística Descriptiva: Cálculo de medidas de tendencia central y dispersión para cada variable.
+
+-   Análisis Espacial: Generación de mapas temáticos (coropletas) para visualizar la distribución de cada variable en el departamento del Tolima.
+
+-   Análisis Exploratorio de Datos (EDA): Empleo de tablas y gráficos (histogramas, diagramas de dispersión, boxplots) para identificar patrones, valores atípicos y relaciones entre las variables.
+
+# Procedimiento Realizado
+
+El procedimiento para la recolección y preparación de los datos se llevó a cabo siguiendo los siguientes pasos:
+
+## 1. Búsqueda y Recolección de Datos
+
+• Identificación de Fuentes Primarias: Se realizó una búsqueda exhaustiva en los portales web de entidades como el DANE (para IPM, NBI, IDH), el DNP (para Desempeño Fiscal) y el IGAC (para cartografía básica y coordenadas geográficas).
+
+• Descarga de Datos: Los datasets pertinentes fueron descargados en formatos compatibles (CSV, XLSX, Shapefile). Se priorizaron los datos más recientes y con mayor desagregación municipal disponible.
+
+• Consulta de Coordenadas Geográficas: Se obtuvieron las coordenadas geográficas (latitud y longitud) de las cabeceras municipales del Tolima, ya sea directamente de las entidades oficiales o a través de servicios de geocodificación confiables para el cálculo de distancias.
+
+## 2. Procesamiento y Estandarización de Datos
+
+• Limpieza de Datos: Se realizó una revisión de los datos descargados para identificar y corregir posibles errores de formato, valores nulos o inconsistencias (ej., nombres de municipios, códigos DANE).
+
+• Homogeneización: Los datos de las diferentes fuentes fueron unificados en un único formato (preferiblemente .xlsx o csv) para facilitar su integración. Se verificó la consistencia en la codificación de los municipios entre las distintas fuentes.
+
+• Cálculo de Distancias: Se calculó la distancia (euclidiana o de ruta) de cada cabecera municipal a Ibagué utilizando las coordenadas geográficas obtenidas, implementando funciones en R o herramientas SIG.
+
+• Integración de Datos Espaciales: Los datos tabulares de los indicadores (pobreza, desempeño fiscal, distancia) fueron unidos a los archivos de límites geográficos municipales (shapefiles) utilizando los códigos DANE como clave de unión.
+
+## 3. Implementación del Código y Generación de Entregables
+
+• Desarrollo de Scripts en R/Quarto: Se desarrollaron scripts en R (archivos .R o .qmd) para:
+
+◦ Cargar y limpiar los datos.
+
+◦ Realizar el análisis exploratorio (generación de tablas y gráficos).
+
+◦ Crear los mapas temáticos solicitados (pobreza, desempeño fiscal, distancia).
+
+◦ Generar el informe final en formato HTML.
+
+• Reproducibilidad del Código: Se aseguró que todo el código fuera reproducible, sin referencias a rutas absolutas, y se incluyó la documentación mínima necesaria para entender su funcionamiento.
+
+• Generación del Informe HTML: Utilizando Quarto, se compiló el contenido textual, los gráficos y los mapas generados por el código en un único archivo HTML final.
+
+• Organización de Entregables: Se organizaron todos los archivos generados (.xlsx, .R/.qmd, .html) en una estructura de carpetas lógica para su posterior empaquetamiento en un archivo comprimido.
+
+• Uso de IA para Revisión: Se emplearon herramientas de inteligencia artificial para revisar la redacción, ortografía y gramática del informe final, asegurando la claridad y coherencia del texto. Se dejará constancia de su uso en el documento.
+
+• Control de Versiones: Todos los archivos de código y el informe fueron gestionados mediante Git y subidos a un repositorio de GitHub, facilitando el control de cambios y la colaboración.
+
+# Análisis exploratorio de la información fiscal de los municipios del Tolima
+
+```{r}
+# algunas lineas de codigo para librerias que no esten instaladas
+install.packages("cartography")
+install.packages("sf")
+install.packages("ggplot2")
+install.packages("readxl")
+install.packages("dplyr")
+install.packages("tidyverse")
+install.packages("knitr")
+install.packages("janitor")
+```
+
+```{r}
+# Cargar las librerías necesarias
+library(cartography)
+library(sf)
+library(dplyr)
+library(readxl)
+library(dplyr)
+library(tidyverse)
+library(knitr)
+library(janitor)
+# Leer el archivo de Excel con los resultados del IDF
+BaseDatosBase <- read_excel("ResultadosIDF_Nueva_MetodologIa_2023_Act.xlsx", sheet = 2, skip = 6)
+
+# Filtrar para obtener solo los registros del departamento de Tolima
+BDatosTolima <- BaseDatosBase %>%
+  filter(Departamento == "TOLIMA")
+
+# Eliminar la columna "Departamento" ya que no es necesaria para el análisis
+BDatosTolima<- BDatosTolima %>%
+  select(-Departamento)
+```
+
+## Variables y valores a manejar
+
+En este apartado no analizaremos todas las variables, solo las que puedan tener mas relevancia para entender el estado fiscal del Tolima, pero antes que ello es necesario revisar los valores atípicos o valores que puedan entorpecer el análisis.
+
+```{r}
+#| output: false # No mostrar el output de este chunk
+total_na <- sum(is.na(BDatosTolima))# Mostrar el total de valores NA en el DataFrame
+print(total_na)
+```
+
+Al ver si hay valores faltantes se evidencio que no existen en el dataframe, pero si existen valores atípicos en varias variables, la cual es “ND”, la cual es el acrónimo de No Disponible o No Declarado, en este caso se manejara dependiendo de la situación a analizar, ya que no puede ser reconocida como 0 u otro valor numérico, pero en general se eliminara para poder realizar operaciones con variables puramente enteras o decimales, aunque puede darse que sea necesario tener este valor en cuenta.
+
+## Análisis de las variables más relevantes
+
+### Dependencia de las Transferencias de la Nación
+
+```{r}
+# LIMPIEZA Y TRANSFORMACIÓN DE DATOS
+
+# 1. Definir las columnas originales que contienen "ND"
+cols_con_nd <- c(
+  "Dependencia de las Transferencias", "Relevancia FBK fijo", "Ahorro Corriente",
+  "Balance Primario", "Holgura", "Capacidad de programación y recaudo de ingresos",
+  "Capacidad de Ejecución de Inversión"
+)
+
+# 2. Pipeline de limpieza y transformación
+tolima_clean <- BDatosTolima %>%
+  # Primero, limpiar TODOS los nombres de las columnas del dataframe
+  clean_names() %>%
+  # Segundo, transformar las columnas específicas que contienen "ND"
+  mutate(across(
+    # Seleccionar las columnas usando sus nombres limpios, generados a partir de la lista original
+    all_of(make_clean_names(cols_con_nd)), 
+    # La función a aplicar: reemplazar "ND" por NA y convertir a numérico
+    ~ as.numeric(na_if(., "ND"))
+  )) %>%
+  # Tercero, limpiar y ordenar la variable 'Rango' para los gráficos
+  mutate(
+    rango_limpio = str_remove(rango, "^\\d+\\.\\s*") %>% str_trim(),
+    rango_limpio = factor(rango_limpio, levels = c(
+      "Deterioro (<40)", "Vulnerable (>=40 y <60)", "Riesgo (>=40 y <60)", 
+      "Solvente (>=60 y <80)", "Sostenible (>=80)"
+    ))
+  )
+```
+
+```{r}
+# Gráfico de caja y puntos para Dependencia de las Transferencias
+ggplot(tolima_clean, aes(x = categorias, y = dependencia_de_las_transferencias, fill = categorias)) +
+  geom_boxplot(na.rm = TRUE, show.legend = FALSE) +
+  geom_jitter(na.rm = TRUE, width = 0.1, alpha = 0.6, color = "darkblue") +
+  labs(
+    title = "Dependencia de las Transferencias de la Nación",
+    subtitle = "Comparación por categoría municipal en Tolima",
+    x = "Categoría del Municipio",
+    y = "Dependencia (%)"
+  ) +
+  theme_minimal() +
+  scale_fill_viridis_d()
+```
+
+Esta gráfica muestra cómo el porcentaje del presupuesto de un municipio que proviene de transferencias del gobierno nacional varía según su categoría. La tendencia general es clara: a medida que la categoría municipal aumenta (lo que generalmente corresponde a municipios más pequeños y con menos capacidad de generar ingresos propios), la dependencia de las transferencias nacionales se incrementa notablemente. Mientras que los municipios de categorías 1, 3 y 5 (de los cuales parece haber solo un caso por categoría en la muestra) muestran niveles de dependencia entre el 42% y el 64%, los municipios de categoría 6 presentan una dependencia mucho mayor y más variable.
+
+El diagrama de caja para la categoría 6 revela que la mediana de dependencia se sitúa en torno al 73%, lo que significa que la mitad de estos municipios dependen en más de un 73% de los fondos nacionales. Además, existe una dispersión muy amplia, con casos que van desde una dependencia del 40% hasta casi el 90%. Esto subraya la alta vulnerabilidad fiscal de los municipios más pequeños del departamento, cuya operatividad e inversión dependen masivamente de decisiones y asignaciones del nivel central, limitando su autonomía financiera.
+
+### Inversión (FBK) vs. Dependencia de Transferencias
+
+```{r}
+# Gráfico de dispersión para Inversión (FBK) vs Dependencia de Transferencias
+ggplot(tolima_clean, aes(x = dependencia_de_las_transferencias, y = relevancia_fbk_fijo)) +
+  geom_point(aes(color = categorias, size = resultados), alpha = 0.8, na.rm = TRUE) +
+  geom_smooth(method = "lm", color = "firebrick", se = FALSE, na.rm = TRUE) +
+  labs(
+    title = "Inversión (FBK) vs. Dependencia de Transferencias",
+    subtitle = "¿Los más dependientes invierten menos?",
+    x = "Dependencia de Transferencias (%)",
+    y = "Relevancia de la Inversión en FBK (%)",
+    color = "Categoría",
+    size = "Resultados"
+  ) +
+  theme_minimal() +
+  scale_color_viridis_d()
+```
+
+Este diagrama de dispersión analiza si los municipios más dependientes de las transferencias invierten menos, utilizando la "Relevancia de la Inversión en Formación Bruta de Capital (FBK)" como medida. La línea de tendencia roja, con una clara pendiente negativa, confirma esta hipótesis: a mayor dependencia de las transferencias, menor es el porcentaje del presupuesto destinado a la inversión. Los municipios con una dependencia inferior al 60% llegan a registrar tasas de inversión superiores al 30%, mientras que aquellos con una dependencia por encima del 80% rara vez superan el 25% de inversión.
+
+La mayoría de los puntos en la gráfica son amarillos, correspondientes a los municipios de categoría 6, lo que es coherente con los hallazgos de la primera gráfica. Esto sugiere que la alta dependencia no solo es un indicador de falta de recursos propios, sino que también está correlacionada con una menor capacidad o prioridad para ejecutar proyectos de inversión, lo que a su vez podría perpetuar su bajo desarrollo y su ciclo de dependencia. El tamaño de los puntos, que representa los "Resultados" (posiblemente un índice de desempeño), no muestra un patrón claro, indicando que un buen o mal desempeño general no está ligado de forma simple a esta dinámica de dependencia-inversión.
+
+### Ahorro Corriente vs. Endeudamiento Total
+
+```{r}
+# Gráfico de dispersión para Ahorro Corriente vs Endeudamiento Total
+ggplot(tolima_clean, aes(x = ahorro_corriente, y = endeudamiento_total)) +
+  geom_point(aes(fill = rango_limpio), size = 4, alpha = 0.8, shape = 21, na.rm = TRUE) +
+  geom_text(aes(label = ifelse(endeudamiento_total > 50, municipio, "")), 
+            vjust = -1, size = 3, color = "black", na.rm = TRUE) +
+  labs(
+    title = "Endeudamiento vs. Ahorro Corriente",
+    subtitle = "Nivel de deuda respecto a la capacidad de ahorro. Puntos coloreados por Rango IDF.",
+    x = "Ahorro Corriente (%)",
+    y = "Endeudamiento Total (%)",
+    fill = "Rango de Desempeño"
+  ) +
+  theme_minimal() +
+  scale_fill_viridis_d(option = "C", na.value = "grey80")
+```
+
+Esta gráfica compara el nivel de endeudamiento total de los municipios con su capacidad de generar ahorro corriente, coloreando los puntos según su rango en el Índice de Desempeño Fiscal (IDF). No se observa una correlación lineal clara, lo que indica que no hay una relación directa y simple entre tener más ahorro y tener menos deuda. En cambio, la gráfica revela diferentes perfiles de gestión fiscal. Por ejemplo, municipios como Cajamarca y Cunday se encuentran en una posición de alto riesgo, con un endeudamiento elevado y una baja capacidad de ahorro. En contraste, otros como Alvarado y El Guamo, aunque tienen una deuda alta, también poseen un ahorro corriente robusto, lo que sugiere que su endeudamiento puede estar respaldado y destinado a proyectos de inversión.
+
+El coloreado por "Rango de Desempeño" añade una capa de análisis crucial. Es interesante notar que la mayoría de los municipios se encuentran en la categoría de "Riesgo" (amarillo), independientemente de su posición en el gráfico, lo que muestra que el riesgo fiscal puede provenir de distintas combinaciones de deuda y ahorro. El caso de Líbano es particularmente llamativo: a pesar de tener un endeudamiento relativamente bajo, está clasificado en "Deterioro", lo que implica que su bajo desempeño fiscal general se debe a otros factores no visibles en este gráfico, como una baja ejecución de la inversión o una mala gestión de ingresos. Esto demuestra la necesidad de un análisis multidimensional para entender la salud financiera de un municipio.
+
+### Balance Primario vs. Ahorro Corriente
+
+```{r}
+# Gráfico de dispersión para Ahorro Corriente vs Balance Primario
+ggplot(tolima_clean, aes(x = ahorro_corriente, y = balance_primario)) +
+  geom_point(aes(color = rango_limpio), size = 3, na.rm = TRUE) +
+  geom_smooth(method = "lm", color = "black", linetype = "dashed", na.rm = TRUE) +
+  labs(
+    title = "Correlación entre Ahorro Corriente y Balance Primario",
+    x = "Ahorro Corriente (%)",
+    y = "Balance Primario (%)",
+    color = "Rango IDF"
+  ) +
+  theme_light() +
+  scale_color_viridis_d(option = "D")
+```
+
+Este gráfico de dispersión explora la relación entre la capacidad de un municipio para generar ahorro a partir de sus operaciones corrientes y su balance primario (ingresos corrientes menos gastos corrientes, sin contar el pago de intereses de la deuda). La línea de tendencia, casi horizontal, y la amplia dispersión de los puntos indican que no existe una correlación lineal fuerte entre estas dos variables. Es decir, un municipio con un alto nivel de ahorro corriente no necesariamente tiene un balance primario más positivo.
+
+Esta falta de correlación es reveladora. Sugiere que el balance primario de un municipio está influenciado por factores que van más allá de su capacidad de ahorro, como la magnitud de sus gastos de funcionamiento o la volatilidad de sus ingresos. Por ejemplo, un municipio podría tener un buen ahorro corriente (eje X) pero un balance primario bajo o incluso negativo (eje Y) si sus gastos de funcionamiento (sin intereses) son muy elevados. La mayoría de los municipios se encuentran en la categoría de "Riesgo" (puntos amarillos), demostrando que incluso dentro de este grupo, las estrategias y resultados fiscales varían enormemente.
+
+### Ahorro Corriente por Rango de Desempeño Fiscal
+
+```{r}
+# Gráfico de caja para Ahorro Corriente por Rango de Desempeño Fiscal
+ggplot(tolima_clean, aes(x = rango_limpio, y = ahorro_corriente, fill = rango_limpio)) +
+  geom_boxplot(na.rm = TRUE, show.legend = FALSE) +
+  labs(
+    title = "Capacidad de Ahorro por Rango de Desempeño Fiscal",
+    x = "Rango de Desempeño (IDF)",
+    y = "Ahorro Corriente (%)"
+  ) +
+  theme_minimal() +
+  scale_fill_viridis_d(option = "D")
+```
+
+A diferencia del gráfico anterior, este diagrama de caja muestra una relación muy clara y positiva entre la capacidad de ahorro corriente y el Rango de Desempeño Fiscal (IDF). Los municipios clasificados en "Deterioro" tienen la capacidad de ahorro más baja y con menor variación, estancada por debajo del 40%. Aquellos en la categoría de "Riesgo" muestran una capacidad de ahorro mayor, con una mediana en torno al 43%, aunque con una variabilidad considerable. Finalmente, el grupo "NA" (que probablemente agrupa a los municipios con desempeño "Sostenible" o bueno) exhibe la mayor capacidad de ahorro, con una mediana por encima del 55%.
+
+Este análisis confirma que el ahorro corriente es un pilar fundamental del desempeño fiscal. La capacidad de generar un superávit de los ingresos corrientes sobre los gastos de funcionamiento es un diferenciador clave entre los municipios con finanzas en deterioro, en riesgo o saludables. Un bajo ahorro limita la capacidad de un municipio para pagar deuda y, fundamentalmente, para financiar la inversión con recursos propios, lo que explica su fuerte peso en la calificación general del IDF.
+
+### Gráficos de Recaudo y Ejecución de Inversión vs. IDF
+
+```{r}
+# Gráfico 1: Recaudo vs IDF
+p1 <- ggplot(tolima_clean, aes(x = capacidad_de_programacion_y_recaudo_de_ingresos, y = nuevo_idf)) +
+  geom_point(aes(color = rango_limpio), size = 3, na.rm = TRUE) +
+  geom_smooth(method = "lm", se = FALSE, color = "gray40", na.rm = TRUE) +
+  labs(
+    title = "Recaudo de Ingresos vs. IDF",
+    x = "Capacidad de Recaudo (%)",
+    y = "Nuevo IDF"
+  ) +
+  theme_bw() +
+  theme(legend.position = "none")
+
+# Gráfico 2: Inversión vs IDF
+p2 <- ggplot(tolima_clean, aes(x = capacidad_de_ejecucion_de_inversion, y = nuevo_idf)) +
+  geom_point(aes(color = rango_limpio), size = 3, na.rm = TRUE) +
+  geom_smooth(method = "lm", se = FALSE, color = "gray40", na.rm = TRUE) +
+  labs(
+    title = "Ejecución de Inversión vs. IDF",
+    x = "Ejecución de Inversión (%)",
+    y = "Nuevo IDF",
+    color = "Rango IDF"
+  ) +
+  theme_bw()
+
+# Mostrar el grafico de recaudo
+p1
+```
+
+Esta gráfica presenta un resultado a primera vista contraintuitivo: la línea de tendencia muestra una correlación negativa entre la "Capacidad de Recaudo" y el "Nuevo IDF". Esto sugiere que a mayor capacidad de recaudo, el desempeño fiscal general tiende a ser peor. Sin embargo, una inspección más detallada revela la verdadera historia. La "Capacidad de Recaudo" se mide probablemente como el recaudo real frente al presupuestado. Un valor muy por encima del 100% (como 200% o 400%) no indica necesariamente una gestión excelente, sino una planificación presupuestaria deficiente y poco realista.
+
+Los municipios con mejor desempeño (puntos grises, con IDF más alto) tienden a tener una capacidad de recaudo más cercana al 100-150%, lo que denota una mayor precisión en sus proyecciones de ingresos. Por el contrario, un municipio que recauda el 300% de lo que presupuestó (como el punto rojo de "Deterioro") demuestra una grave falencia en su capacidad de planeación, lo cual es penalizado en el índice de desempeño global. Por lo tanto, el gráfico no castiga el buen recaudo, sino la mala presupuestación, subrayando que la calidad de la planificación fiscal es tan importante como la ejecución.
+
+```{r}
+# Mostrar el grafico de ejecución de inversión
+p2
+```
+
+Al igual que en otros gráficos, la línea de tendencia aquí es casi plana, lo que indica que no hay una correlación directa entre el porcentaje de ejecución de la inversión y el desempeño fiscal general (IDF). Se puede observar que muchos municipios, tanto los de "Riesgo" (turquesa) como los de mejor desempeño (gris), logran tasas de ejecución muy altas, entre el 80% y el 100%. Incluso un municipio en "Deterioro" (rojo) muestra una ejecución superior al 90%.
+
+Esto demuestra que la ejecución de la inversión, aunque es un componente importante de la gestión pública, no es suficiente por sí sola para garantizar una buena salud fiscal. Un municipio puede ser muy eficiente en gastar su presupuesto de inversión, pero si este presupuesto es muy pequeño (como vimos en el análisis de dependencia), o si el municipio tiene problemas estructurales de deuda, bajo ahorro o mala planificación de ingresos, su IDF general será bajo. En resumen, el IDF es un índice compuesto, y la excelencia en un solo indicador no puede compensar deficiencias graves en otros.
+
+### Resumen de los Municipios con y sin Bonos
+
+```{r}
+# Crear una variable para identificar si tienen o no algún bono
+bono_summary <- tolima_clean %>%
+  mutate(tiene_bono = ifelse(bonificacion_esfuerzo_propio > 0 | bono_catastro > 0, "Con Bono", "Sin Bono")) %>%
+  group_by(tiene_bono) %>%
+  summarise(
+    `Número de Municipios` = n(),
+    `IDF Promedio` = mean(nuevo_idf, na.rm = TRUE),
+    `IDF Mediano` = median(nuevo_idf, na.rm = TRUE)
+  ) %>%
+  arrange(desc(tiene_bono))
+
+# Mostrar la tabla con kable
+kable(bono_summary, digits = 2)
+```
+
+Esta tabla compara el desempeño fiscal de los municipios que recibieron algún tipo de "bono" (probablemente por buen desempeño en áreas específicas como la actualización catastral o el esfuerzo en recaudo propio) con los que no lo recibieron. Los resultados son contundentes: los 18 municipios "Con Bono" tienen un IDF promedio (56.75) y mediano (56.82) significativamente más altos que los 29 municipios "Sin Bono" (cuyo promedio es de 49.28).
+
+Este hallazgo sugiere que los mecanismos de incentivos funcionan como un buen indicador de la calidad de la gestión. Los municipios que logran cumplir las metas para obtener estos bonos son, en general, los que ya tienen una administración fiscal más ordenada y proactiva. Por lo tanto, el bono no solo mejora ligeramente el puntaje del IDF, sino que actúa como un marcador que identifica a las administraciones con mejores prácticas, las cuales se reflejan en un desempeño fiscal integralmente superior.
+
+### Distribución de Puntajes del Nuevo IDF y Clasificación de Municipios por Rango de Desempeño
+
+```{r}
+# Histograma de los puntajes IDF (con sintaxis corregida)
+p_hist <- ggplot(tolima_clean, aes(x = nuevo_idf)) +
+  geom_histogram(aes(fill = after_stat(count)), bins = 10, na.rm = TRUE) + # <-- CORRECCIÓN AQUÍ
+  labs(
+    title = "Distribución de Puntajes del Nuevo IDF",
+    x = "Puntaje Nuevo IDF",
+    y = "Número de Municipios"
+  ) +
+  scale_fill_gradient(low = "lightblue", high = "navy") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+# Gráfico de barras de los rangos (con sintaxis corregida)
+p_bar <- ggplot(tolima_clean, aes(y = fct_rev(rango_limpio), fill = rango_limpio)) +
+  geom_bar(na.rm = TRUE, show.legend = FALSE) +
+  geom_text(stat = 'count', aes(label = after_stat(count)), hjust = -0.2, size = 4) + # <-- CORRECCIÓN AQUÍ
+  labs(
+    title = "Clasificación de Municipios por Rango de Desempeño",
+    x = "Número de Municipios",
+    y = "Rango"
+  ) +
+  scale_fill_viridis_d(option = "C") +
+  theme_minimal() +
+  xlim(0, max(table(tolima_clean$rango_limpio)) * 1.1)
+
+## Mostrar el grafico de distribución de puntajes del IDF
+p_hist
+```
+
+Este histograma visualiza la distribución de los puntajes del Índice de Desempeño Fiscal (IDF) para todos los municipios del Tolima. El hallazgo más evidente es la fuerte concentración de municipios en el rango de puntaje de 50 a 60, donde se encuentra la barra más alta, agrupando a casi 20 municipios. Esto indica que el desempeño fiscal "típico" o más común en el departamento se sitúa en este nivel intermedio, que como vimos en gráficos anteriores, corresponde a la categoría de "Riesgo".
+
+La distribución general muestra que, si bien la mayoría se agrupa en el centro, existe una dispersión considerable. Hay un número significativo de municipios con puntajes más altos (entre 60 y 80), lo que representa un grupo con una gestión fiscal más sólida. Por otro lado, hay menos municipios en los rangos más bajos (por debajo de 50), aunque todavía existe un pequeño grupo en una situación fiscal muy precaria (con puntajes por debajo de 40). En resumen, el panorama fiscal del Tolima no es homogéneo; está dominado por un gran "pelotón" de municipios en riesgo, seguido por un grupo más pequeño pero saludable y unos pocos rezagados en estado crítico.
+
+```{r}
+# Mostrar el grafico de clasificación de municipios por rango de desempeño
+p_bar
+```
+
+Este diagrama de barras simplifica y cuantifica la información del histograma anterior, clasificando a cada municipio en una de las tres categorías de desempeño. El resultado es contundente y confirma el análisis previo: la inmensa mayoría de los municipios del Tolima, 30 de los 47, se encuentran en la categoría de "Riesgo". Esto significa que más del 60% de los municipios operan con una vulnerabilidad financiera que, si bien no es una crisis inminente, les impide tener una posición fiscal sólida y sostenible.
+
+La gráfica también dimensiona claramente los dos extremos del espectro. Por un lado, hay un grupo de 13 municipios en la categoría "NA" (que, por el contexto, corresponde a los de mejor desempeño, probablemente "Sostenible" o "Solvente"). Este grupo, que representa casi el 30% del total, demuestra que es posible alcanzar una buena salud fiscal en el departamento. En el otro extremo, 4 municipios están clasificados en "Deterioro", señalando focos de crisis fiscal que requieren atención urgente. Esta visualización es clave para la formulación de políticas públicas, ya que permite identificar dónde se concentra el riesgo y qué proporción de municipios necesita apoyo o, por el contrario, puede servir de ejemplo.
+
+## Conclusiones de los datos
+
+En resumen, la salud fiscal de los municipios del Tolima presenta un panorama de vulnerabilidad generalizada pero con importantes matices. La conclusión más contundente es que la gran mayoría de los municipios (30 de 47) se encuentra en una categoría de "Riesgo". Esto no indica una crisis inminente, sino una condición de fragilidad financiera donde las administraciones operan con márgenes estrechos y poca capacidad para afrontar imprevistos o impulsar un desarrollo robusto. Este gran grupo central contrasta con un conjunto más pequeño pero significativo de 13 municipios con un desempeño fiscal sólido y un foco crítico de 4 municipios en estado de "Deterioro" que requieren atención prioritaria.
+
+El principal motor de esta vulnerabilidad es la alta dependencia estructural de las transferencias nacionales, especialmente en los municipios de categoría 6. Esta dependencia no es solo una cifra contable; tiene consecuencias directas y negativas sobre la capacidad de inversión (Formación Bruta de Capital), creando un posible círculo vicioso: la falta de ingresos propios limita la inversión, lo que a su vez frena el desarrollo económico que podría generar nuevos ingresos. Esta dinámica sugiere que la autonomía fiscal es un desafío central para la sostenibilidad a largo plazo en el departamento.
+
+Finalmente, el análisis revela que los factores que diferencian a los municipios de buen desempeño de los que están en riesgo no son unidimensionales. La capacidad de generar Ahorro Corriente emerge como el indicador más decisivo para una buena calificación fiscal. Sin embargo, no se trata solo de cifras brutas; la calidad de la gestión es fundamental. Por ejemplo, una buena ejecución de la inversión no garantiza un buen desempeño si los demás pilares son débiles, y una alta capacidad de recaudo es inútil si la planificación presupuestaria es deficiente. Los municipios que logran obtener bonos por buenas prácticas demuestran que las mejoras en áreas específicas se correlacionan con una salud fiscal integralmente superior, subrayando que el camino hacia la sostenibilidad fiscal en Tolima pasa por fortalecer la capacidad de ahorro y, sobre todo, por mejorar la calidad y realismo en la planificación financiera.
+
+### Mapa de los municipios del Tolima con el IDF
+
+```{r}
+#| message: false
+#| warning: false
+#| include: false
+# Define la ruta al directorio que contiene el shapefile.
+ruta <- "MGN2024_MPIO_POLITICO"
+# Lee el archivo shapefile y lo carga como un objeto espacial 'sf' llamado 'mapa'.
+# Este objeto contiene los polígonos de todos los municipios de Colombia y sus datos asociados.
+mapa <- st_read(ruta)
+
+
+# ---- PASO 1: Filtrado de datos espaciales ----
+
+# Filtra el mapa completo de Colombia para conservar únicamente los polígonos
+# cuyo código de departamento ('dpto_ccdgo') sea "73", correspondiente al Tolima.
+tolima_shape <- mapa %>%
+  filter(dpto_ccdgo == "73") 
+
+
+# ---- PASO 2: Unión de datos espaciales y fiscales ----
+
+# Limpia y estandariza los nombres de las columnas del shapefile del Tolima 
+# (e.g., convierte 'MPIO_CDPMP' a 'mpio_cdpmp') para facilitar la unión de datos.
+tolima_shape_clean <- tolima_shape %>% clean_names()
+
+# Realiza una unión (join) entre el objeto espacial del Tolima ('tolima_shape_clean')
+# y la tabla de datos fiscales ('tolima_clean').
+# La unión se realiza usando 'mpio_cdpmp' del mapa y 'codigo' de la tabla de datos,
+# ya que ambas columnas contienen el código municipal completo de 5 dígitos (ej. "73001"),
+# asegurando que cada municipio reciba sus datos fiscales correctos.
+tolima_mapa_datos <- tolima_shape_clean %>%
+  left_join(
+    tolima_clean,
+    by = c("mpio_cdpmp" = "codigo")
+  )
+```
+
+Como producto obtenemos este mapa que resume el estado financiero del Tolima, donde cada municipio está coloreado según su categoría de desempeño fiscal. Los colores representan las diferentes categorías: "Sostenible", "Riesgo" y "Deterioro", lo que permite una visualización clara de la salud fiscal en el departamento.
+
+El hallazgo más contundente, visible a simple vista, es la predominancia del color amarillo, lo que ratifica visualmente que la condición de "Riesgo" es la realidad fiscal para la mayoría de los municipios del Tolima. Sin embargo, el verdadero valor de esta representación geográfica radica en los patrones que revela, los cuales no son evidentes en los gráficos anteriores. Los municipios en "Deterioro" (rojo) no están dispersos al azar, sino que exhiben una notable concentración en la porción oriental y nororiental del departamento, sugiriendo que pueden existir desafíos estructurales, económicos o de gestión compartidos en esta subregión específica.
+
+En contraste, los municipios con desempeño "Sostenible" (verde) también muestran una tendencia a agruparse, con una concentración significativa en el suroccidente del Tolima, además de algunos casos aislados en el norte y el centro. Esta distribución espacial es fundamental para la formulación de políticas públicas, ya que permite pasar de un enfoque municipal individual a estrategias regionales. Se podrían investigar las causas de la crisis fiscal en el oriente, mientras se estudian las buenas prácticas del clúster del suroccidente para replicar sus éxitos en los municipios vecinos en riesgo. En definitiva, el mapa transforma el diagnóstico fiscal de una lista de datos a una herramienta estratégica para la planificación territorial.
+
+```{r}
+# ---- PASO 3: Creación de categorías y visualización ----
+
+# Añade una nueva columna ('idf_categoria') al data frame para clasificar cada municipio
+# en una categoría de desempeño fiscal según su puntaje en la columna 'nuevo_idf'.
+tolima_mapa_datos <- tolima_mapa_datos %>%
+  mutate(
+    # Usa 'case_when' para asignar una etiqueta de texto según el puntaje IDF.
+    idf_categoria = case_when(
+      nuevo_idf < 40                 ~ "Deterioro (<40)",
+      nuevo_idf >= 40 & nuevo_idf < 60 ~ "Riesgo (>=40 y <60)",
+      nuevo_idf >= 60                ~ "Sostenible (>=60)",
+      TRUE                           ~ "Sin Datos" # Categoría para municipios sin datos.
+    ),
+    # Convierte la nueva columna a tipo 'factor' para controlar el orden de las 
+    # categorías en la leyenda del gráfico y asegurar una visualización coherente.
+    idf_categoria = factor(idf_categoria, levels = c("Sostenible (>=60)", "Riesgo (>=40 y <60)", "Deterioro (<40)", "Sin Datos"))
+  )
+
+# Inicia la construcción del mapa utilizando ggplot.
+ggplot(data = tolima_mapa_datos) +
+  # Añade la capa de geometrías (los polígonos de los municipios).
+  # El color de relleno ('fill') de cada polígono se determina por su 'idf_categoria'.
+  # Se dibuja un borde blanco ('color = "white"') delgado ('lwd = 0.2') para separar los municipios.
+  geom_sf(aes(fill = idf_categoria), color = "white", lwd = 0.2) +
+  
+  # Define manualmente los colores y el título para la leyenda del mapa.
+  # Esto permite un control total sobre la paleta de colores del gráfico.
+  scale_fill_manual(
+    name = "Desempeño Fiscal", # Título de la leyenda.
+    values = c(
+      "Sostenible (>=60)"   = "#2a9d8f",
+      "Riesgo (>=40 y <60)" = "#e9c46a",
+      "Deterioro (<40)"     = "#e76f51",
+      "Sin Datos"           = "grey80"
+    ),
+    na.value = "grey80" # Color para cualquier valor NA que pudiera existir.
+  ) +
+  
+  # Establece los textos del título principal, subtítulo y pie de página del mapa.
+  labs(
+    title = "Índice Fiscal en el Departamento del Tolima",
+    subtitle = "Clasificación del desempeño de los municipios según su puntaje IDF",
+    caption = "Fuente: Elaboración propia con datos de BDatosTolima y DANE Geoportal"
+  ) +
+  
+  # Aplica un tema minimalista ('theme_void') ideal para mapas, que elimina los ejes, 
+  # la cuadrícula y el fondo gris por defecto.
+  theme_void() +
+  
+  # Realiza ajustes finos a la apariencia del tema, como la posición de la leyenda y el
+  # formato de los textos del título.
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+    plot.subtitle = element_text(hjust = 0.5, size = 12),
+    plot.caption = element_text(hjust = 1, size = 8)
+  )
+```
+
+```{r, warning=FALSE, message=FALSE}
+# Limpiar todas las variables del entorno global
+rm(list = ls())
+library(ggplot2)
+library(patchwork)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(patchwork)
+library(ggplot2)
+library(patchwork)
+library(dplyr)
+#install.packages("corrr")
+#install.packages("ggcorrplot")
+library(dplyr)
+library(corrr)       # Alternativa moderna y legible
+library(ggcorrplot)  # Para graficar
+#install.packages(c("leaflet", "sf", "dplyr", "RColorBrewer"))
+library(leaflet)
+library(dplyr)
+library(sf)
+library(leaflet)
+library(dplyr)
+library(sf)
+library(RColorBrewer)
+library(htmlwidgets)
+library(RColorBrewer)
+```
+
+```{r, warning=FALSE, message=FALSE}
+
+
+data = read_csv("Resultados-icfes.csv")
+```
+
+# Analsis descriptivo para la base de datos ICFES
+
+```{r}
+## filtramos para el departamento del tolima 
+names(data)
+```
+
+**Se convirten las variables categoricas en tipo factor**
+
+```{r}
+
+# Versión correcta y robusta
+data <- as.data.frame(lapply(data, function(col) {
+  if (is.character(col)) {
+    return(as.factor(col))
+  } else {
+    return(col)
+  }
+}))
+
+```
+
+```{r}
+summary(data)
+```
+
+Del resumen general sobre todas las variables podemos observar lo siguiente:
+
+-   Se presentan algunos valores faltantes en algunas variables
+
+-   Se tienen 6 variables categóricas y 15 varibles númericas
+
+## Análisis univariado
+
+```{r}
+# Variables numéricas excluyendo identificadores
+cols_excluir <- c("CODINST", "CODIGODANE_SEDE", "CODIGOMUNICIPIO", "PERIODO")
+num_vars <- data %>%
+  select(where(is.numeric)) %>%
+  select(-any_of(cols_excluir))
+```
+
+```{r, warning=FALSE}
+# Graficar histogramas con densidad para cada variable
+plots <- lapply(names(num_vars), function(var) {
+  ggplot(data, aes_string(x = var)) +
+    geom_histogram(aes(y = ..density..), bins = 30, fill = "skyblue", color = "black", alpha = 0.7) +
+    geom_density(color = "darkred", size = 1) +
+    ggtitle(paste("Histograma", var)) +
+    theme_minimal()
+})
+```
+
+```{r, warning=FALSE}
+# Dividir en dos mosaicos
+n <- length(plots)
+mitad <- ceiling(n / 2)
+
+mosaico1 <- wrap_plots(plots[1:mitad], ncol = 2)
+mosaico2 <- wrap_plots(plots[(mitad + 1):n], ncol = 2)
+
+# Mostrar ambos
+mosaico1
+```
+
+```{r, warning=FALSE}
+mosaico2
+```
+
+El análisis exploratorio de las variables numéricas relacionadas con el desempeño estudiantil muestra que el número de estudiantes evaluados por sede (variable EVALUADO) presenta una distribución altamente sesgada a la derecha, lo cual indica que la mayoría de las sedes tienen una baja cantidad de estudiantes evaluados, mientras que solo unas pocas concentran valores altos. En cuanto a los promedios de las áreas evaluadas (PROMLECTURACRITICA, PROMMATEMATICA, PROMSOCIALESYCIUDADANAS, PROMCIENCIASNATURALES y PROMINGLES), se observa una distribución aproximadamente normal, con concentraciones entre los valores de 40 y 60 puntos, lo que sugiere un rendimiento general relativamente homogéneo entre las sedes, aunque con ligeras asimetrías en algunas áreas.
+
+Por otro lado, las distribuciones de las desviaciones estándar (DESVLECTURACRITICA, DESVMATEMATICA, DESVSOCIALESYCIUDADANAS, DESVCIENCIASNATURALES y DESVINGLES) muestran una concentración mayoritaria entre los valores de 5 y 10, evidenciando una variabilidad moderada en el rendimiento dentro de cada sede. En particular, la desviación en matemáticas presenta una mayor dispersión en comparación con las otras áreas, lo que podría reflejar una mayor heterogeneidad en los resultados obtenidos por los estudiantes en esta competencia específica.
+
+```{r}
+# Suponiendo que df ya contiene las columnas NATURALEZA y JORNADA
+
+# Lista de variables categóricas a graficar
+cat_vars <- c("NATURALEZA", "JORNADA")
+
+# Crear los gráficos de barras
+bar_plots <- lapply(cat_vars, function(var) {
+  ggplot(data, aes_string(x = var)) +
+    geom_bar(fill = "steelblue", color = "black") +
+    ggtitle(paste("Distribución de", var)) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+})
+
+# Mostrar en mosaico (1 fila, 2 columnas)
+wrap_plots(bar_plots, ncol = 2)
+
+```
+
+En cuanto a la variable NATURALEZA, se evidencia que la mayoría de las instituciones que participaron en la evaluación son de carácter oficial, representando más del triple en comparación con las instituciones no oficiales. Esta distribución sugiere una fuerte presencia del sector público en el conjunto de datos analizado. Respecto a la variable JORNADA, se observa una mayor concentración en las jornadas mañana y única, mientras que las jornadas completa, tarde, nocturna y fin de semana presentan frecuencias considerablemente menores. Esta distribución refleja una organización institucional centrada en los horarios diurnos, siendo menos comunes las modalidades alternas como la nocturna o de fin de semana.
+
+## Análisis multivariado
+
+```{r}
+# Excluir columnas que no deben incluirse
+cols_excluir <- c("CODINST", "CODIGODANE_SEDE", "CODIGOMUNICIPIO", "PERIODO")
+
+# Seleccionar solo variables numéricas válidas
+num_vars <- data %>%
+  select(where(is.numeric)) %>%
+  select(-any_of(cols_excluir))
+
+# Asegurar que NATURALEZA sea factor
+data$NATURALEZA <- as.factor(data$NATURALEZA)
+
+plots_nat <- lapply(names(num_vars), function(var) {
+  ggplot(data, aes_string(x = var, fill = "NATURALEZA", color = "NATURALEZA")) +
+    geom_histogram(aes(y = ..density..), position = "identity", bins = 30, alpha = 0.4) +
+    geom_density(size = 1.1) +
+    ggtitle(paste("Distribución de", var, "por NATURALEZA")) +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 7))  # Ajusta el tamaño del título aquí
+})
+
+# Dividir en dos mosaicos si hay muchas variables
+n <- length(plots_nat)
+mitad <- ceiling(n / 2)
+
+mosaico_nat1 <- wrap_plots(plots_nat[1:mitad], ncol = 2)
+mosaico_nat2 <- wrap_plots(plots_nat[(mitad + 1):n], ncol = 2)
+
+
+
+```
+
+```{r, warning=FALSE}
+# Mostrar resultados
+mosaico_nat1
+
+```
+
+Al analizar la distribución de las variables numéricas según la naturaleza de las instituciones (OFICIAL vs NO OFICIAL), se observan diferencias importantes tanto en el número de estudiantes evaluados como en los resultados promedios por área. En primer lugar, la variable EVALUADO muestra que las instituciones oficiales concentran un mayor número de estudiantes, con una distribución claramente sesgada a la derecha, mientras que las instituciones no oficiales presentan una menor cantidad de evaluados y una distribución más compacta.
+
+Respecto a los puntajes promedio por área (PROMLECTURACRITICA, PROMMATEMATICA, PROMSOCIALESYCIUDADANAS, PROMCIENCIASNATURALES y PROMINGLES), se identifican patrones donde las instituciones no oficiales tienden a obtener puntajes levemente más altos y con menor dispersión en comparación con las oficiales. En especial, esto es evidente en áreas como matemáticas, lectura crítica y sociales, donde las curvas de densidad de las instituciones no oficiales se desplazan hacia la derecha. No obstante, las instituciones oficiales presentan distribuciones más amplias y con mayor heterogeneidad, lo cual podría estar asociado a la mayor diversidad de condiciones entre sedes oficiales.
+
+Estas diferencias sugieren que las instituciones no oficiales, aunque en menor cantidad, podrían tener un desempeño promedio más consistente y alto en varias áreas evaluadas, lo cual amerita un análisis más detallado desde el punto de vista de la calidad educativa y las condiciones institucionales asociadas.
+
+```{r, warning=FALSE}
+mosaico_nat2
+```
+
+En los siguientes gráficos se observa la relación entre los puntajes promedio de las distintas áreas evaluadas, discriminada por la variable JORNADA. En general, se evidencian correlaciones positivas fuertes entre las diferentes competencias, lo cual sugiere que los estudiantes que obtienen buenos resultados en un área tienden a obtener buenos resultados en las demás. Esto es consistente en casi todos los pares analizados, especialmente entre PROMLECTURACRITICA, PROMMATEMATICA, PROMSOCIALESYCIUDADANAS y PROMCIENCIASNATURALES, donde las nubes de puntos forman patrones alineados en diagonal.
+
+Al analizar los grupos por jornada, se identifica que las jornadas MAÑANA y ÚNICA concentran la mayoría de las observaciones, y sus datos están distribuidos a lo largo de todo el rango de puntajes. Esto puede deberse a que estas jornadas agrupan un mayor número de instituciones. En contraste, las jornadas NOCTURNA, TARDE, FIN DE SEMANA y COMPLETA tienen menos representación en el conjunto de datos, aunque no se observan desviaciones sistemáticas notables que indiquen un rendimiento marcadamente diferente.
+
+A pesar de la dispersión, algunas jornadas como MAÑANA y ÚNICA muestran concentraciones en niveles medios-altos de desempeño en varias áreas, lo cual podría asociarse a una mayor estabilidad institucional o condiciones más regulares de aprendizaje. Por su parte, las jornadas menos frecuentes presentan mayor variabilidad relativa, aunque esta podría estar influida por el bajo número de observaciones.
+
+```{r, warning=FALSE}
+
+# Asegurarse de que JORNADA sea un factor
+data$JORNADA <- as.factor(data$JORNADA)
+
+# Lista de variables de puntaje promedio
+puntajes <- c("PROMLECTURACRITICA", "PROMMATEMATICA", "PROMSOCIALESYCIUDADANAS",
+              "PROMCIENCIASNATURALES", "PROMINGLES")
+
+# Crear combinaciones de pares (sin repetición) para scatterplots
+pares <- combn(puntajes, 2, simplify = FALSE)
+
+# Crear scatterplots con ajuste de tamaño de texto
+scatter_plots <- lapply(pares, function(par) {
+  ggplot(data, aes_string(x = par[1], y = par[2], color = "JORNADA")) +
+    geom_point(alpha = 0.6, size = 1.8) +
+    theme_minimal() +
+    ggtitle(paste(par[2], "vs", par[1])) +
+    theme(
+      plot.title = element_text(size = 5),
+      axis.title = element_text(size = 5),
+      axis.text = element_text(size = 5),
+      legend.title = element_text(size = 5),
+      legend.text = element_text(size = 5)
+    )
+})
+
+
+
+```
+
+```{r}
+# Mostrar en tres mosaicos (por bloques de 5)
+n <- length(scatter_plots)
+bloque1 <- scatter_plots[1:min(5, n)]
+bloque2 <- scatter_plots[6:min(10, n)]
+bloque3 <- scatter_plots[11:n]
+
+mosaico1 <- wrap_plots(bloque1, ncol = 2)
+mosaico2 <- wrap_plots(bloque2, ncol = 2)
+#mosaico3 <- wrap_plots(bloque3, ncol = 2)
+
+
+```
+
+```{r, warning=FALSE}
+# Mostrar los mosaicos
+mosaico1
+
+```
+
+```{r, warning=FALSE}
+mosaico2
+```
+
+**Análisis de correlación para las variables númericas**
+
+La matriz de correlación muestra una alta asociación positiva entre los puntajes promedio de las distintas áreas evaluadas. Las correlaciones más fuertes se observan entre PROMLECTURACRITICA, PROMMATEMATICA, PROMSOCIALESYCIUDADANAS y PROMCIENCIASNATURALES, con coeficientes superiores a 0.85, lo que sugiere que el rendimiento en una de estas áreas tiende a acompañarse de un buen desempeño en las demás. En contraste, PROMINGLES presenta correlaciones más bajas con las otras áreas, lo que indica que podría comportarse de manera más independiente dentro del conjunto evaluado.
+
+```{r}
+
+# Excluir variables no informativas
+vars_excluir <- c("CODINST", "CODIGODANE_SEDE", "CODIGOMUNICIPIO", "PERIODO")
+
+# Seleccionar solo las numéricas relevantes
+df_numericas <- data %>%
+  select(where(is.numeric)) %>%
+  select(-any_of(vars_excluir))
+
+# Calcular matriz de correlación
+cor_matrix <- cor(df_numericas, use = "pairwise.complete.obs")
+
+# Visualización con ggcorrplot
+ggcorrplot(cor_matrix,
+           type = "lower",
+           lab = TRUE,
+           lab_size = 3,
+           tl.cex = 9,
+           colors = c("red", "white", "blue"),
+           title = "Matriz de Correlación entre Puntajes y Desviaciones")
+
+```
+
+## Análisis espacial de las variables promedio puntaje.
+
+```{r, warning=FALSE, message=FALSE}
+#| message: false
+#| warning: false
+#| include: false
+# Cargar paquetes necesarios
+library(sf)
+library(ggplot2)
+
+# Ruta al archivo .shp
+ruta_shp <- "MGN2024_MPIO_POLITICO/MGN_ADM_MPIO_GRAFICO.shp"
+
+# Leer el archivo shapefile
+mapa_mpios <- st_read(ruta_shp)
+
+```
+
+**Vizualización de Colombia**
+
+```{r}
+# Verificar la estructura (opcional)
+# print(mapa_mpios)
+
+# Graficar el shapefile
+ggplot(data = mapa_mpios) +
+  geom_sf(fill = "lightblue", color = "grey40") +
+  theme_minimal() +
+  labs(title = "Mapa de Municipios (MGN 2024)", caption = "Fuente: DANE")
+
+```
+
+**Vizualización del Tolima**
+
+```{r}
+mapa_mpios_t = mapa_mpios %>% 
+  filter(dpto_cnmbr == "TOLIMA")
+```
+
+```{r}
+# Graficar el shapefile
+ggplot(data = mapa_mpios_t) +
+  geom_sf(fill = "lightblue", color = "grey40") +
+  theme_minimal() +
+  labs(title = "Mapa de Municipios (MGN 2024)", caption = "Fuente: DANE")
+```
+
+```{r}
+# Hacer merge de la base datos icfes con las informacion georeferenciada
+data_t = data %>% 
+  select(c(CODIGOMUNICIPIO, NOMBREMUNICIPIO, NATURALEZA, NATURALEZA,PROMLECTURACRITICA, PROMMATEMATICA, PROMSOCIALESYCIUDADANAS, PROMCIENCIASNATURALES, PROMINGLES))
+
+
+shape_t = mapa_mpios_t %>% 
+  select(mpio_cdpmp,  mpio_cnmbr, geometry)
+#shape_df <- as.data.frame(shape_t)
+
+```
+
+```{r}
+library(dplyr)
+
+data_t <- data %>%
+  group_by(CODIGOMUNICIPIO) %>%
+  summarise(
+    NOMBREMUNICIPIO = first(NOMBREMUNICIPIO),
+    NATURALEZA = first(NATURALEZA),  # OJO: solo si es única por municipio
+    PROMLECTURACRITICA = mean(PROMLECTURACRITICA, na.rm = TRUE),
+    PROMMATEMATICA = mean(PROMMATEMATICA, na.rm = TRUE),
+    PROMSOCIALESYCIUDADANAS = mean(PROMSOCIALESYCIUDADANAS, na.rm = TRUE),
+    PROMCIENCIASNATURALES = mean(PROMCIENCIASNATURALES, na.rm = TRUE),
+    PROMINGLES = mean(PROMINGLES, na.rm = TRUE)
+  )
+```
+
+
+```{r}
+# Hacemos el merge
+# Asegurarse de que las claves estén como texto
+shape_t$mpio_cdpmp <- as.character(shape_t$mpio_cdpmp)
+data_t$CODIGOMUNICIPIO <- as.character(data_t$CODIGOMUNICIPIO)
+
+# Hacer el merge usando shape_t como base (¡esto es clave!)
+data_merged <- left_join(shape_t, data_t, by = c("mpio_cdpmp" = "CODIGOMUNICIPIO"))
+data_merged <- data_merged %>%
+  select(c(NOMBREMUNICIPIO, NATURALEZA, PROMLECTURACRITICA, PROMMATEMATICA,
+           PROMSOCIALESYCIUDADANAS, PROMCIENCIASNATURALES, PROMINGLES, geometry))
+
+# Verificar que la geometría siga presente
+#class(data_merged)
+```
+
+### Vizualición para la variables de cada materia.
+
+```{r}
+
+# Lista de variables
+variables <- c(
+  "PROMLECTURACRITICA", "PROMMATEMATICA", "PROMSOCIALESYCIUDADANAS",
+  "PROMCIENCIASNATURALES", "PROMINGLES"
+)
+
+# Crear paletas
+pal_list <- lapply(variables, function(var) {
+  colorNumeric("YlGnBu", domain = data_merged[[var]])
+})
+names(pal_list) <- variables
+
+# Mapa base
+mapa <- leaflet(data_merged) %>%
+  addProviderTiles("CartoDB.Positron")
+
+# Añadir polígonos y leyendas con className personalizada
+for (var in variables) {
+  pal <- pal_list[[var]]
+  mapa <- mapa %>%
+    addPolygons(
+      fillColor = ~pal(data_merged[[var]]),
+      color = "white", weight = 1, opacity = 1,
+      fillOpacity = 0.8,
+      label = ~paste0(NOMBREMUNICIPIO, ": ", round(data_merged[[var]], 1)),
+      group = var,
+      highlightOptions = highlightOptions(weight = 2, color = "#666", fillOpacity = 0.9, bringToFront = TRUE)
+    ) %>%
+    addLegend(
+      pal = pal,
+      values = data_merged[[var]],
+      title = paste("Promedio:", var),
+      position = "bottomright",
+      labFormat = labelFormat(digits = 1),
+      opacity = 1,
+      className = paste0("legend-", var)  # CLASE ÚNICA POR VARIABLE
+    )
+}
+
+# Control de capas
+mapa <- mapa %>%
+  addLayersControl(
+    baseGroups = variables,
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  hideGroup(variables[-1])  # Mostrar solo la primera capa
+
+# Estilo final con JavaScript
+mapa <- onRender(mapa, "
+  function(el, x) {
+    const map = this;
+    const groups = ['PROMLECTURACRITICA', 'PROMMATEMATICA', 'PROMSOCIALESYCIUDADANAS', 'PROMCIENCIASNATURALES', 'PROMINGLES'];
+
+    function hideAllLegends() {
+      groups.forEach(g => {
+        const legend = document.querySelector('.legend-' + g);
+        if (legend) legend.style.display = 'none';
+      });
+    }
+
+    function showLegend(groupName) {
+      const legend = document.querySelector('.legend-' + groupName);
+      if (legend) {
+        legend.style.display = 'block';
+        legend.style.fontSize = '10px';
+        legend.style.width = '90px';
+        legend.style.padding = '4px';
+        legend.style.lineHeight = '1.2';
+        legend.style.boxShadow = '0px 0px 3px rgba(0,0,0,0.2)';
+      }
+    }
+
+    // Inicializar
+    hideAllLegends();
+    showLegend(groups[0]);
+
+    map.on('baselayerchange', function(e) {
+      hideAllLegends();
+      showLegend(e.name);
+    });
+  }
+")
+
+# Mostrar
+mapa
+
+
+```
+
+## Mapa de las distacias del municipio a la capital
+
+```{r}
+#| message: false
+#| warning: false
+#| include: false
+library(sf)
+library(dplyr)
+
+# Calcular centroides
+data_centroides <- data_merged %>%
+  mutate(centroide = st_centroid(geometry))
+
+# Extraer centroide de Ibagué
+ibague_centroide <- data_centroides %>%
+  filter(NOMBREMUNICIPIO == "IBAGUÉ") %>%
+  pull(centroide)
+
+# Calcular distancia desde cada centroide al de Ibagué (en metros → km)
+data_merged <- data_centroides %>%
+  mutate(distancia_a_ibague_km = round(as.numeric(st_distance(centroide, ibague_centroide)) / 1000, 2))
+
+
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| include: false
+distacias = data_merged %>% 
+  select(c(NOMBREMUNICIPIO, distancia_a_ibague_km))
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| include: false
+distacias
+```
+
+```{r}
+library(leaflet)
+
+pal <- colorNumeric("YlOrRd", domain = data_merged$distancia_a_ibague_km)
+
+leaflet(data_merged) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(
+    fillColor = ~pal(distancia_a_ibague_km),
+    color = "white", weight = 1,
+    fillOpacity = 0.8,
+    label = ~paste0(NOMBREMUNICIPIO, ": ", distancia_a_ibague_km, " km")
+  ) %>%
+  addLegend(
+    pal = pal,
+    values = ~distancia_a_ibague_km,
+    title = "Distancia a Ibagué (km)",
+    position = "bottomright"
+  )
+
+```
+
+# Analsis descriptivo índice de Pobreza Multidimencional
+
+El Índice de Pobreza Multidimensional es una medida de pobreza que se implementó en Colombia desde el año 2011, con el propósito de estimar la pobreza identificando las carencias que enfrentan las personas en diferentes dimensiones, como la educación, la salud, el trabajo, niñez y condiciones de vivienda (DANE, 2014).
+
+```{r, echo=FALSE, warning=FALSE, results='hide'}
+# Limpiar todas las variables del entorno global
+rm(list = ls())
+library(cartography)
+ruta_dep <- "MGN2024_DPTO_POLITICO/MGN_ADM_DPTO_POLITICO.shp"
+
+mapa_dep <- st_read(ruta_dep) #para leer el archivo shape
+
+ruta_ipm <- "IPM/ipm.csv"
+
+
+ipm <- read.csv2(ruta_ipm, sep = ",")
+
+
+ipm$ipm_2018 <- as.numeric(ipm$ipm_2018)
+ipm$ipm_2024 <- as.numeric(ipm$ipm_2024)
+ipm$dpto_ccdgo <- as.numeric(ipm$dpto_ccdgo)
+mapa_dep$dpto_ccdgo <- as.numeric(mapa_dep$dpto_ccdgo)
+
+m_ipm <- left_join(mapa_dep, ipm, by = "dpto_ccdgo")
+```
+
+```{r, echo=FALSE, warning=FALSE}
+m_ipm_largo <- m_ipm %>%
+  pivot_longer(cols = starts_with("ipm_"), 
+               names_to = "año", 
+               values_to = "IPM") %>%
+  mutate(año = recode(año, "ipm_2018" = "2018", "ipm_2024" = "2024"))
+
+m_ipm_largo[m_ipm_largo$dpto_ccdgo == 88, "dpto_cnmbr"] <- "SAN ANDRES Y P."
+
+ggplot(m_ipm_largo, aes(x = reorder(dpto_cnmbr, -IPM), y = IPM, fill = año)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.6), width = 0.5) +
+  labs(
+    title = "Comparación del IPM por departamento: 2018 vs 2024",
+    x = "Departamento",
+    y = "IPM %",
+    fill = "Año",
+    caption = "Fuente: DANE"
+  ) + scale_y_continuous(limits = c(0, 80)) + 
+  geom_text(
+    aes(label = paste0(round(IPM, 1), "%"), colour = año),
+    position = position_dodge(width = 0.6),
+    hjust = -0.1,
+    size = 2,
+    angle = 90
+  ) +
+  theme_minimal() +
+  theme(
+    title = element_text(size = 12),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 6),
+    legend.position = "bottom", legend.text = element_text(size = 8),
+    legend.title = element_text(size = 9, face = "bold"), legend.key.size = unit(0.4, "cm"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.caption = element_text( size = 8, face = "italic")
+  ) + guides(color = "none") +
+  scale_fill_manual(values = c("2018" = "#781727", "2024" = "#D36A7E"))+
+  scale_color_manual(values = c("2018" = "#781727", "2024" = "#D36A7E"))
+```
+
+A nivel nacional, si hacemos un comparativo entre 2018 y 2024, encontramos que, en terminos generales, hay una tendencia de disminución de la pobreza multidimensional en casi todo el país, lo que demuestra que hay avances importantes en acceso a servicios básicos, educación, vivienda, entre otras.
+
+Sin embargo, en departamentos como Vichada, Guainía y Vaupés se siguen registrando los niveles más altos de IPM, superando incluso el 50% de la población afectada en 2024. Esto indica que más de la mitad de sus habitantes enfrentan múltiples carencias simultáneamente. Esto demuestra que aún persisten desafíos estructurales, sobre todo en regiones amazónicas y periféricas, donde la cobertura de infraestructura y servicios sigue siendo insuficiente.
+
+Por el otro lado, los departamentos como Bogotá, San Andrés, Cundinamarca, Santander y Valle del Cauca son los que mas bajos niveles de IPM mantienen, con menos del 10% de la población en situación de pobreza multidimensional en 2024.
+
+```{r, echo=FALSE, warning=FALSE}
+layout(matrix(1:3, 1, 3), widths = c(4, 4, 2))
+
+cortes_fijos <- getBreaks(m_ipm$ipm_2024, nclass = 5, method = "fisher-jenks")
+colores <- carto.pal(pal1 = "green.pal", n1 = 2, pal2 = "red.pal", n2 = 3)
+
+# Mapa 1: IPM 2018
+par(mar = c(0, 0, 2, 0))
+choroLayer(spdf = m_ipm,
+           var = "ipm_2018",
+           breaks = cortes_fijos,
+           col = colores,
+           legend.pos = "n")
+
+layoutLayer(
+  title = "IPM - Año 2018", 
+  sources = "Fuente: DANE, 2018", 
+  col = "white", coltitle = "black", 
+  scale = FALSE, north = TRUE, 
+  tabtitle = FALSE, postitle = "center"
+)
+
+# Mapa 2: IPM 2024
+par(mar = c(0, 0, 2, 0))
+choroLayer(spdf = m_ipm,
+           var = "ipm_2024",
+           breaks = cortes_fijos,
+           col = colores,
+           legend.pos = "n")
+
+layoutLayer(
+  title = "IPM - Año 2024", 
+  sources = "Fuente: DANE, 2024", 
+  col = "white", coltitle = "black", 
+  scale = FALSE, north = TRUE, 
+  tabtitle = FALSE, postitle = "center"
+)
+
+par(mar = c(0, 0, 0, 0))
+plot.new()
+legendChoro(
+  pos = "center",
+  title.txt = "IPM Departamental %",
+  title.cex = 0.9,
+  values.cex = 0.8,
+  breaks = cortes_fijos,
+  col = colores,
+  nodata = TRUE,
+  nodata.txt = "No data"
+)
+```
+
+En el mapa anterior, se puede observar claramente la distribución territorial de la pobreza multidimensional y su evolución entre 2018 y 2024. Se ve que gran parte de la periféria del país, especialmente la Amazonía y la Orinoquía, junto con departamentos de la región Caribe y Pacífica, son los que más altos niveles de IPM muestran, llegando a superar el 60% en algunos casos y la zona centrica, por el otro lado, concentrando los niveles más bajos. Para el 2024, se evidencia una mejoría en las zonas periféricas, reducciendo el porcentaje de la población en situación de pobreza multidimensional en 22 de los 32 departamentos.
+
+```{r, echo=FALSE, warning=FALSE}
+ruta3 <- "IPM/ipm_tolima.csv"
+ipm_tolima <-read.csv2(ruta3, sep = ",")
+ggplot(ipm_tolima, aes(x = año, y = IPM)) +
+  geom_line(color = "#4C9DB0", size = 1) +        
+  geom_point(color = "#710014", size = 3) +        
+  geom_text(aes(label = IPM), vjust = -0.5) +  
+  labs(
+    title = "Evolución del IPM del Departamento de Tolima",
+    x = "Año",
+    y = "IPM (%)",
+    caption = "Fuente: DANE"
+  ) +scale_y_continuous(limits = c(5, 25))+
+  theme_minimal() + theme(plot.caption = element_text( size = 8, face = "italic"))
+
+```
+
+Al centrarnos en el departamento del Tolima, se puede observar una disminución general del IPM desde 2018 (22,2%) hasta 2024 (12,6%). Lo indica que, en términos generales, la pobreza multidimensional en Tolima ha tenido una reducción importante a lo largo de estos años. Se pueden ver algunas fluctuaciones intermedias, como pasa en el 2020, que luego de una caída pronunciada entre 2018 y 2019, el IPM sube en éste año, lo cual podría relacionarse con impactos de la pandemia de COVID-19. Despues de eso, vuelve a bajar en 2021 y tiene una reducción significativa en 2022 donde alcanza su punto más bajo con 10,5%. Posteriormente, se observa un ligero aumento en 2023 con 12,9% y 2024 con 12,6%.
+
+```{r, echo=FALSE, warning=FALSE, results='hide'}
+ruta_MPM <- "MPM/shapefile/MPM_FuenteCensal_2018.shp"
+
+mapa_MPM <- st_read(ruta_MPM)
+
+tolima_MPM <- mapa_MPM%>% filter(mapa_MPM$DPTO_CCDGO == "73") # para sacar solo los datos del tolima
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+choroLayer(spdf = tolima_MPM,
+           var = "MPM",
+           breaks = cortes_fijos,
+           col = colores,
+           legend.pos = "n")
+
+legendChoro(pos = "right",                  
+            title.txt = "IPM Tolima %",
+            title.cex = 0.6,
+            values.cex = 0.5,
+            breaks = cortes_fijos,
+            col = colores)
+
+layoutLayer(title = "Índice de Pobreza Multidimencional del Departamento del Tolima", sources = "Fuente: DANE, 2018", col = "white", coltitle = "black", scale = FALSE, north = TRUE,tabtitle = FALSE, postitle = "center")
+```
+
+Al observar la distribución del IPM a nivel municipal para 2018, se evidencia que existen municipios con niveles de pobreza multidimensional significativamente superiores al promedio departamental, especialmente concentrados en el sur y suroccidente. Hay desigualdades internas significativas, donde algunos municipios superan el 50–70% de IPM, mientras que otros apenas llegan al 16%.
+
+Se puede ver que son las zonas del sur y suroccidente del departamento las que concentrar los valores más altos de IPM, especialmente los municipios de Rioblanco, Ataco y Coyaima que presentan índices superiores al 60% y al promedio del departamento. En contraste, algunos municipios del norte y centro muestran menores niveles.
+
+Por otro lado, al analizar algunas dimenciones por separado observamos lo siguiente:
+
+```{r, echo=FALSE, warning=FALSE}
+print("Analfabetismo")
+mapa_MPM %>%
+  st_drop_geometry() %>%  # Elimina la columna de geometría
+  summarise(
+    promedio = mean(AFBMO_TOT, na.rm = TRUE),
+    minimo   = min(AFBMO_TOT, na.rm = TRUE),
+    maximo   = max(AFBMO_TOT, na.rm = TRUE),
+    mediana  = median(AFBMO_TOT, na.rm = TRUE),
+    sd  = sd(AFBMO_TOT, na.rm = TRUE)
+  )
+
+print("Bajo logro educativo")
+mapa_MPM %>%
+  st_drop_geometry() %>%  # Elimina la columna de geometría
+  summarise(
+    promedio = mean(BLE_TOT, na.rm = TRUE),
+    minimo   = min(BLE_TOT, na.rm = TRUE),
+    maximo   = max(BLE_TOT, na.rm = TRUE),
+    mediana  = median(BLE_TOT, na.rm = TRUE),
+    sd   = sd(BLE_TOT, na.rm = TRUE)
+  )
+```
+
+Se puede observar que, en promedio, el 17,4% de la población en los municipios tiene rezago por analfabetismo, con municipios muy por debajo (2%) y otros que llegan a más de la mitad de la población (52,5%). Si a lo anterior se le suma el bajo logro educativo, tenemos que hay un problema estructural fuerte donde al menos dos tercios de la población en promedio tienen bajo logro educativo, con municipios donde casi toda la población presenta esta carencia. Lo anterior, detaca el bajo logro educativo y la informalidad laboral como problemas crónicos y extendidos en casi todos los municipios.
+
+```{r, echo=FALSE, warning=FALSE}
+print("No asguramiento a salud")
+mapa_MPM %>%
+  st_drop_geometry() %>%  # Elimina la columna de geometría
+  summarise(
+    promedio = mean(SAFAM_TOT, na.rm = TRUE),
+    minimo   = min(SAFAM_TOT, na.rm = TRUE),
+    maximo   = max(SAFAM_TOT, na.rm = TRUE),
+    mediana  = median(SAFAM_TOT, na.rm = TRUE),
+    sd   = sd(SAFAM_TOT, na.rm = TRUE)
+  )
+print("Trabajo informal")
+mapa_MPM %>%
+  st_drop_geometry() %>%  # Elimina la columna de geometría
+  summarise(
+    promedio = mean(TRIML_TOT, na.rm = TRUE),
+    minimo   = min(TRIML_TOT, na.rm = TRUE),
+    maximo   = max(TRIML_TOT, na.rm = TRUE),
+    mediana  = median(TRIML_TOT, na.rm = TRUE),
+    sd   = sd(TRIML_TOT, na.rm = TRUE)
+  )
+```
+
+El indicador de no aseguramiento a salud presenta gran variabilidad: hay municipios prácticamente con cobertura total (0,2%) y otros donde casi toda la población carece de aseguramiento (99%), esto podría confirmar desigualdades territoriales significativas.
+
+Finalmente, la informalidad laboral se presenta como la carencia más generalizada, con un promedio de 87,6% de la población ocupada en actividades informales, esto es casi que 9 de cada 10 personas trabajan en la informalidad en promedio.
+
+## Referencias
+
+-   AdminIcfes. (2025, 21 marzo). Otros resultados examen Saber 11° - ICFES. ICFES. https://www.icfes.gov.co/evaluaciones-icfes/saber-11/otros-resultados-examen-saber-11/
+
+-   DANE. (2014). Metodología Índice de Pobreza Multidimensional (IPM). Recuperado el 30 de junio de 2025, de https://www.dane.gov.co/files/operaciones/PM/met-IPM.pdf
+
+-   Departamento Administrativo Nacional de Estadística (DANE). (s.f.). Pobreza multidimensional. https://www.dane.gov.co/index.php/estadisticas-por-tema/pobreza-y-condiciones-de-vida/pobreza-multidimensional
+
+-   Datos Abiertos Colombia. (2021, 5 noviembre). DIVIPOLA - Códigos municipios geolocalizados. https://www.datos.gov.co/Mapas-Nacionales/DIVIPOLA-C-digos-municipios-geolocalizados/vafm-j2df/data_preview
+
+-   Geoportal DANE. (s.f.). Página de descarga de datos geoestadísticos. Departamento Administrativo Nacional de Estadística. https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/?cod=111
+
+-   Departamento Nacional de Planeación (DNP). (s.f.). Información fiscal y financiera. https://www.dnp.gov.co/LaEntidad\_/subdireccion-general-descentralizacion-desarrollo-territorial/direccion-descentralizacion-fortalecimiento-fiscal/Paginas/informacion-fiscal-y-financiera.aspx
+
+-   DANE. (s.f.). Medida de pobreza multidimensional municipal de fuente censal 2018. https://www.dane.gov.co/index.php/estadisticas-por-tema/pobreza-y-condiciones-de-vida/pobreza-y-desigualdad/medida-de-pobreza-multidimensional-de-fuente-censal
