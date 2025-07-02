@@ -4,14 +4,13 @@ author:
   - "Juan Pablo Garcia Carballo CC 1000748462"
   - "Diego Leon Rojas Torres CC 98764896"
   - "Valentina Rodríguez Henao CC 1000871745"
-  - ""
 date: "2025-07-01"
 lang: es
 format: 
-  pdf:
+  html:
+    embed-resources: true
     toc: true
 editor: source
-embed-resources: true
 execute: 
   echo: false
   warning: false
@@ -33,7 +32,7 @@ Analizar y visualizar espacialmente la situación socioeconómica y fiscal de lo
 
 # Introducción
 
-El análisis de las dinámicas territoriales es fundamental para el diseño de políticas públicas efectivas y la promoción de un desarrollo equitativo. En este contexto, el departamento del Tolima, un territorio de gran diversidad geográfica, económica y social, presenta un mosaico de realidades a nivel municipal que a menudo quedan ocultas tras los promedios departamentales. Comprender las brechas, fortalezas y debilidades de cada uno de sus 47 municipios es, por tanto, un paso crucial para identificar las verdaderas necesidades de su población y optimizar la gestión de los recursos.
+El análisis de las dinámicas territoriales es fundamental para el diseño de políticas públicas efectivas y la promoción de un desarrollo equitativo. En este contexto, el departamento del Tolima, un territorio de gran diversidad geográfica, económica y social, presenta un mosaico de realidades a nivel municipal que a menudo quedan ocultas tras los promedios departamentales. Comprender las brechas, fortalezas y debilidades de cada uno de sus 47 municipios es por tanto un paso crucial para identificar las verdaderas necesidades de su población y optimizar la gestión de los recursos.
 
 El presente trabajo tiene como propósito central realizar un diagnóstico espacial integral de los municipios del Tolima, articulando variables clave de índole fiscal, social y geográfica. A través de la elaboración de mapas temáticos y el análisis de datos cuantitativos, se busca visualizar la distribución de indicadores fundamentales como el Índice de Desempeño Fiscal (IDF), el Índice de Pobreza Multidimensional (IPM) y la accesibilidad geográfica medida por la distancia a la capital, Ibagué. Estos análisis se complementan con una exploración de los resultados educativos para enriquecer la comprensión del panorama socioeconómico.
 
@@ -47,7 +46,7 @@ La presente investigación adoptará un enfoque cuantitativo y descriptivo, apoy
 
 ### Fuentes de Datos:
 
-Oficiales de Colombia: Se priorizarán bases de datos y publicaciones de entidades gubernamentales como el Departamento Administrativo Nacional de Estadística (DANE), el Departamento Nacional de Planeación (DNP), el Departamento Nacional de Estadística (DANE), la Contaduría General de la Nación (CGN), y otras instituciones relevantes que publiquen información a nivel municipal.
+Oficiales de Colombia: Se priorizarán bases de datos y publicaciones de entidades gubernamentales como el Departamento Administrativo Nacional de Estadística (DANE), el Departamento Nacional de Planeación (DNP), la Contaduría General de la Nación (CGN), y otras instituciones relevantes que publiquen información a nivel municipal.
 
 Cartografía Base: Se utilizarán archivos de límites geográficos municipales (shapefiles) del Tolima, provenientes de fuentes oficiales (ej., IGAC o DANE) para la representación espacial de los indicadores.
 
@@ -55,7 +54,7 @@ Internet: Plataformas de datos abiertos, repositorios académicos y sitios web d
 
 ### Software y Herramientas:
 
-Lenguaje de Programación: R (con paquetes como tidyverse, sf, ggplot2, leaflet, rmarkdown, knitr para la manipulación, análisis y visualización de datos).
+Lenguaje de Programación: R (con paquetes como tidyverse, sf, ggplot2, leaflet para la manipulación, análisis y visualización de datos).
 
 Entorno de Desarrollo Integrado (IDE): RStudio.
 
@@ -131,6 +130,51 @@ El procedimiento para la recolección y preparación de los datos se llevó a ca
 
 • Control de Versiones: Todos los archivos de código y el informe fueron gestionados mediante Git y subidos a un repositorio de GitHub, facilitando el control de cambios y la colaboración.
 
+# Contexto del Tolima
+
+```{r, fig.width=10, fig.height=8, echo=FALSE, warning=FALSE}
+#| message: false
+#| warning: false
+#| include: false
+library(sf)
+library(cartography)
+library(dplyr) # Si estás usando el operador %>% (pipe)
+ruta_MPM <- "MPM/shapefile/MPM_FuenteCensal_2018.shp"
+
+mapa_MPM <- st_read(ruta_MPM)
+
+tolima_MPM <- mapa_MPM%>% filter(mapa_MPM$DPTO_CCDGO == "73") # para sacar solo los datos del tolima
+```
+```{r}
+colores <- ifelse(tolima_MPM$MPIO_CNMBR == "IBAGUÉ", "pink", "#EBDDC5")
+plot(st_geometry(tolima_MPM), col = colores)
+
+labelLayer(
+  tolima_MPM,
+  txt = "MPIO_CNMBR",
+  cex = 0.5,         
+  font = 1,          
+  col = "black",
+  overlap = FALSE,
+  halo = TRUE
+)
+
+layoutLayer(title = "Mapa del departamento de Tolima con sus municipios", sources = "Fuente: DANE, 2024", col = "white", coltitle = "black", scale = FALSE, north = TRUE,tabtitle = FALSE, postitle = "center")
+
+legend(
+  "bottomright",                    
+  legend = c("Capital: Ibagué", "Otros municipios"),
+  fill = c("pink", "#EBDDC5"),        
+  border = "black",                 
+  bty = "n",                        
+  cex = 0.8
+)
+```
+
+
+ El departamento de Tolima se encuentra en el centro del país, al sur de la Región Andina, con Ibagué como su capital(“Departamento Del Tolima,” 2021). Cuenta con 47 municipios y una superficie de 23,562 kilómetros que se caracterizan por su gran diversidad geográfica (Posada, 2024). El Tolima es uno de los departamentos de Colombia más reconocidos por su rica tradición cultural, especialmente en la música folclórica andina, como el bambuco y el pasillo, y por festividades como el Festival Folclórico Colombiano (Bravo, n.d.).
+
+
 # Análisis exploratorio de la información fiscal de los municipios del Tolima
 
 ```{r}
@@ -169,7 +213,7 @@ BDatosTolima<- BDatosTolima %>%
 
 ## Variables y valores a manejar
 
-En este apartado no analizaremos todas las variables, solo las que puedan tener mas relevancia para entender el estado fiscal del Tolima, pero antes que ello es necesario revisar los valores atípicos o valores que puedan entorpecer el análisis.
+En este apartado no analizaremos todas las variables, solo las que puedan tener más relevancia para entender el estado fiscal del Tolima, pero antes que ello es necesario revisar los valores atípicos o valores que puedan entorpecer el análisis.
 
 ```{r}
 #| output: false # No mostrar el output de este chunk
@@ -177,7 +221,7 @@ total_na <- sum(is.na(BDatosTolima))# Mostrar el total de valores NA en el DataF
 print(total_na)
 ```
 
-Al ver si hay valores faltantes se evidencio que no existen en el dataframe, pero si existen valores atípicos en varias variables, la cual es “ND”, la cual es el acrónimo de No Disponible o No Declarado, en este caso se manejara dependiendo de la situación a analizar, ya que no puede ser reconocida como 0 u otro valor numérico, pero en general se eliminara para poder realizar operaciones con variables puramente enteras o decimales, aunque puede darse que sea necesario tener este valor en cuenta.
+Al ver si hay valores faltantes se evidenció que no existen en el dataframe, pero si existen valores atípicos en varias variables, la cual es “ND”, la cual es el acrónimo de No Disponible o No Declarado, en este caso se manejará dependiendo de la situación a analizar, ya que no puede ser reconocida como 0 u otro valor numérico, pero en general se eliminará para poder realizar operaciones con variables puramente enteras o decimales, aunque puede darse que sea necesario tener este valor en cuenta.
 
 ## Análisis de las variables más relevantes
 
@@ -550,20 +594,11 @@ library(ggplot2)
 library(patchwork)
 library(dplyr)
 library(tidyverse)
-library(ggplot2)
-library(patchwork)
-library(ggplot2)
-library(patchwork)
-library(dplyr)
 #install.packages("corrr")
 #install.packages("ggcorrplot")
-library(dplyr)
 library(corrr)       # Alternativa moderna y legible
 library(ggcorrplot)  # Para graficar
 #install.packages(c("leaflet", "sf", "dplyr", "RColorBrewer"))
-library(leaflet)
-library(dplyr)
-library(sf)
 library(leaflet)
 library(dplyr)
 library(sf)
@@ -578,7 +613,7 @@ library(RColorBrewer)
 data = read_csv("Resultados-icfes.csv")
 ```
 
-# Analsis descriptivo para la base de datos ICFES
+# Análisis descriptivo para la base de datos ICFES
 
 ```{r}
 ## filtramos para el departamento del tolima 
@@ -755,9 +790,6 @@ scatter_plots <- lapply(pares, function(par) {
       legend.text = element_text(size = 5)
     )
 })
-
-
-
 ```
 
 ```{r}
@@ -784,7 +816,7 @@ mosaico1
 mosaico2
 ```
 
-**Análisis de correlación para las variables númericas**
+**Análisis de correlación para las variables numéricas**
 
 La matriz de correlación muestra una alta asociación positiva entre los puntajes promedio de las distintas áreas evaluadas. Las correlaciones más fuertes se observan entre PROMLECTURACRITICA, PROMMATEMATICA, PROMSOCIALESYCIUDADANAS y PROMCIENCIASNATURALES, con coeficientes superiores a 0.85, lo que sugiere que el rendimiento en una de estas áreas tiende a acompañarse de un buen desempeño en las demás. En contraste, PROMINGLES presenta correlaciones más bajas con las otras áreas, lo que indica que podría comportarse de manera más independiente dentro del conjunto evaluado.
 
@@ -830,33 +862,9 @@ mapa_mpios <- st_read(ruta_shp)
 
 ```
 
-**Vizualización de Colombia**
-
-```{r}
-# Verificar la estructura (opcional)
-# print(mapa_mpios)
-
-# Graficar el shapefile
-ggplot(data = mapa_mpios) +
-  geom_sf(fill = "lightblue", color = "grey40") +
-  theme_minimal() +
-  labs(title = "Mapa de Municipios (MGN 2024)", caption = "Fuente: DANE")
-
-```
-
-**Vizualización del Tolima**
-
 ```{r}
 mapa_mpios_t = mapa_mpios %>% 
   filter(dpto_cnmbr == "TOLIMA")
-```
-
-```{r}
-# Graficar el shapefile
-ggplot(data = mapa_mpios_t) +
-  geom_sf(fill = "lightblue", color = "grey40") +
-  theme_minimal() +
-  labs(title = "Mapa de Municipios (MGN 2024)", caption = "Fuente: DANE")
 ```
 
 ```{r}
@@ -997,7 +1005,7 @@ mapa
 
 ```
 
-## Mapa de las distacias del municipio a la capital
+## Mapa de las distancias del municipio a la capital
 
 ```{r}
 #| message: false
@@ -1059,7 +1067,7 @@ leaflet(data_merged) %>%
 
 ```
 
-# Analsis descriptivo índice de Pobreza Multidimencional
+# Análisis descriptivo índice de Pobreza Multidimensional
 
 El Índice de Pobreza Multidimensional es una medida de pobreza que se implementó en Colombia desde el año 2011, con el propósito de estimar la pobreza identificando las carencias que enfrentan las personas en diferentes dimensiones, como la educación, la salud, el trabajo, niñez y condiciones de vivienda (DANE, 2014).
 
@@ -1124,11 +1132,11 @@ ggplot(m_ipm_largo, aes(x = reorder(dpto_cnmbr, -IPM), y = IPM, fill = año)) +
   scale_color_manual(values = c("2018" = "#781727", "2024" = "#D36A7E"))
 ```
 
-A nivel nacional, si hacemos un comparativo entre 2018 y 2024, encontramos que, en terminos generales, hay una tendencia de disminución de la pobreza multidimensional en casi todo el país, lo que demuestra que hay avances importantes en acceso a servicios básicos, educación, vivienda, entre otras.
+A nivel nacional, si hacemos un comparativo entre 2018 y 2024, encontramos que, en términos generales, hay una tendencia de disminución de la pobreza multidimensional en casi todo el país, lo que demuestra que hay avances importantes en acceso a servicios básicos, educación, vivienda, entre otras.
 
 Sin embargo, en departamentos como Vichada, Guainía y Vaupés se siguen registrando los niveles más altos de IPM, superando incluso el 50% de la población afectada en 2024. Esto indica que más de la mitad de sus habitantes enfrentan múltiples carencias simultáneamente. Esto demuestra que aún persisten desafíos estructurales, sobre todo en regiones amazónicas y periféricas, donde la cobertura de infraestructura y servicios sigue siendo insuficiente.
 
-Por el otro lado, los departamentos como Bogotá, San Andrés, Cundinamarca, Santander y Valle del Cauca son los que mas bajos niveles de IPM mantienen, con menos del 10% de la población en situación de pobreza multidimensional en 2024.
+Por el otro lado, los departamentos como Bogotá, San Andrés, Cundinamarca, Santander y Valle del Cauca son los que más bajos niveles de IPM mantienen, con menos del 10% de la población en situación de pobreza multidimensional en 2024.
 
 ```{r, echo=FALSE, warning=FALSE}
 layout(matrix(1:3, 1, 3), widths = c(4, 4, 2))
@@ -1182,7 +1190,7 @@ legendChoro(
 )
 ```
 
-En el mapa anterior, se puede observar claramente la distribución territorial de la pobreza multidimensional y su evolución entre 2018 y 2024. Se ve que gran parte de la periféria del país, especialmente la Amazonía y la Orinoquía, junto con departamentos de la región Caribe y Pacífica, son los que más altos niveles de IPM muestran, llegando a superar el 60% en algunos casos y la zona centrica, por el otro lado, concentrando los niveles más bajos. Para el 2024, se evidencia una mejoría en las zonas periféricas, reducciendo el porcentaje de la población en situación de pobreza multidimensional en 22 de los 32 departamentos.
+En el mapa anterior, se puede observar claramente la distribución territorial de la pobreza multidimensional y su evolución entre 2018 y 2024. Se ve que gran parte de la periferia del país, especialmente la Amazonía y la Orinoquía, junto con departamentos de la región Caribe y Pacífica, son los que más altos niveles de IPM muestran, llegando a superar el 60% en algunos casos y la zona centrica, por el otro lado, concentrando los niveles más bajos. Para el 2024, se evidencia una mejoría en las zonas periféricas, reduciendo el porcentaje de la población en situación de pobreza multidimensional en 22 de los 32 departamentos.
 
 ```{r, echo=FALSE, warning=FALSE}
 ruta3 <- "IPM/ipm_tolima.csv"
@@ -1201,7 +1209,7 @@ ggplot(ipm_tolima, aes(x = año, y = IPM)) +
 
 ```
 
-Al centrarnos en el departamento del Tolima, se puede observar una disminución general del IPM desde 2018 (22,2%) hasta 2024 (12,6%). Lo indica que, en términos generales, la pobreza multidimensional en Tolima ha tenido una reducción importante a lo largo de estos años. Se pueden ver algunas fluctuaciones intermedias, como pasa en el 2020, que luego de una caída pronunciada entre 2018 y 2019, el IPM sube en éste año, lo cual podría relacionarse con impactos de la pandemia de COVID-19. Despues de eso, vuelve a bajar en 2021 y tiene una reducción significativa en 2022 donde alcanza su punto más bajo con 10,5%. Posteriormente, se observa un ligero aumento en 2023 con 12,9% y 2024 con 12,6%.
+Al centrarnos en el departamento del Tolima, se puede observar una disminución general del IPM desde 2018 (22,2%) hasta 2024 (12,6%). Lo indica que, en términos generales, la pobreza multidimensional en Tolima ha tenido una reducción importante a lo largo de estos años. Se pueden ver algunas fluctuaciones intermedias, como pasa en el 2020, que luego de una caída pronunciada entre 2018 y 2019, el IPM sube en este año, lo cual podría relacionarse con impactos de la pandemia de COVID-19. Después de eso, vuelve a bajar en 2021 y tiene una reducción significativa en 2022 donde alcanza su punto más bajo con 10,5%. Posteriormente, se observa un ligero aumento en 2023 con 12,9% y 2024 con 12,6%.
 
 ```{r, echo=FALSE, warning=FALSE, results='hide'}
 ruta_MPM <- "MPM/shapefile/MPM_FuenteCensal_2018.shp"
@@ -1231,9 +1239,9 @@ layoutLayer(title = "Índice de Pobreza Multidimencional del Departamento del To
 
 Al observar la distribución del IPM a nivel municipal para 2018, se evidencia que existen municipios con niveles de pobreza multidimensional significativamente superiores al promedio departamental, especialmente concentrados en el sur y suroccidente. Hay desigualdades internas significativas, donde algunos municipios superan el 50–70% de IPM, mientras que otros apenas llegan al 16%.
 
-Se puede ver que son las zonas del sur y suroccidente del departamento las que concentrar los valores más altos de IPM, especialmente los municipios de Rioblanco, Ataco y Coyaima que presentan índices superiores al 60% y al promedio del departamento. En contraste, algunos municipios del norte y centro muestran menores niveles.
+Se puede ver que son las zonas del sur y suroccidente del departamento las que concentran los valores más altos de IPM, especialmente los municipios de Rioblanco, Ataco y Coyaima que presentan índices superiores al 60% y al promedio del departamento. En contraste, algunos municipios del norte y centro muestran menores niveles.
 
-Por otro lado, al analizar algunas dimenciones por separado observamos lo siguiente:
+Por otro lado, al analizar algunas dimensiones por separado observamos lo siguiente:
 
 ```{r, echo=FALSE, warning=FALSE}
 print("Analfabetismo")
@@ -1262,7 +1270,7 @@ mapa_MPM %>%
 Se puede observar que, en promedio, el 17,4% de la población en los municipios tiene rezago por analfabetismo, con municipios muy por debajo (2%) y otros que llegan a más de la mitad de la población (52,5%). Si a lo anterior se le suma el bajo logro educativo, tenemos que hay un problema estructural fuerte donde al menos dos tercios de la población en promedio tienen bajo logro educativo, con municipios donde casi toda la población presenta esta carencia. Lo anterior, detaca el bajo logro educativo y la informalidad laboral como problemas crónicos y extendidos en casi todos los municipios.
 
 ```{r, echo=FALSE, warning=FALSE}
-print("No asguramiento a salud")
+print("No aseguramiento a salud")
 mapa_MPM %>%
   st_drop_geometry() %>%  # Elimina la columna de geometría
   summarise(
@@ -1288,7 +1296,69 @@ El indicador de no aseguramiento a salud presenta gran variabilidad: hay municip
 
 Finalmente, la informalidad laboral se presenta como la carencia más generalizada, con un promedio de 87,6% de la población ocupada en actividades informales, esto es casi que 9 de cada 10 personas trabajan en la informalidad en promedio.
 
-## Referencias
+# Conclusiones
+
+El análisis espacial y fiscal del departamento del Tolima evidencia que, a pesar de los avances logrados en la reducción de la pobreza multidimensional durante los últimos años, con una disminución significativa del IPM del 22,2% en 2018 al 12,6% en 2024, aún persisten desigualdades profundas entre los municipios del departamento, tanto en materia socioeconómica como en su desempeño fiscal y educativo.
+
+En primer lugar, en el nivel fiscal se observa que la gran mayoría de los municipios se encuentran en riesgo financiero debido principalmente por la fuerte dependencia a las transferencias nacionales y la poca capacidad de generar ingresos propios lo que reduce la capacidad de inversión en infraestructura y demás proyectos, causando que sea más difícil lograr la autonomía y sostenibilidad fiscal a largo plazo sobre todo en municipios de categoría 6, donde más del 70% de los presupuestos provienen del nivel central. 
+
+Al acompañar el nivel fiscal junto con el análisis de variables como la capacidad de ahorro corriente, el nivel de endeudamiento, el balance primario y la calidad de la planeación presupuestaria muestra que, aunque la capacidad de generar ahorro corriente es uno de los indicadores más claros de buena salud fiscal esto no es suficiente si no se acompaña con una planeación presupuestaria realista y una gestión eficiente del recaudo. Además, los municipios que recibieron bonos por buenas prácticas tienen un desempeño fiscal significativamente superior, lo que demuestra que los incentivos bien diseñados pueden fortalecer la gestión. 
+
+En el caso de la pobreza multidimensional se puede ver que algunas zonas, especialmente en el sur y suroccidente del departamento, mantienen niveles de IPM muy superiores al promedio departamental, revelando puntos de pobreza profunda asociados a carencias como el bajo logro educativo, altas tasas de analfabetismo, informalidad laboral que es cercana al 90% y desigualdades en el aseguramiento en salud. Lo anterior demuestra que la disminución de la pobreza no ha sido homogénea y que aún existen retos significativos para garantizar oportunidades equitativas en el departamento.
+
+Al profundizar en el desempeño académico de los municipios del departamento, observamos que, aunque los resultados académicos mantienen una tendencia relativamente homogénea en cada una de las áreas evaluadas, existen diferencias entre instituciones oficiales y no oficiales siendo estos últimos los que mejores resultados promedios obtienen y con menos dispersión. Además, se puede observar desigualdades en la cobertura y condiciones según la jornada escolar sobre todo en los colegios de modalidad oficial que son los que más estudiantes concentran.
+
+En conjunto, este trabajo deja claro que el departamento de Tolima requiere profundizar su capacidad de planificación, reforzar la generación de ingresos propios, estimular la inversión productiva y cerrar brechas educativas y sociales mediante estrategias integrales y sostenibles para alcanzar un mejor futuro.
+
+# Recomendaciones
+
+A partir del análisis integral de la situación fiscal, social, educativa y geográfica de los municipios del Tolima, se plantean las siguientes recomendaciones estratégicas dirigidas a la Gobernación del Tolima, las alcaldías municipales y demás entidades responsables de la planificación regional:
+
+## En gestión fiscal y gobernanza
+
+Fortalecer la autonomía fiscal de los municipios: Considerando que la mayoría de los municipios se encuentran en categoría de “Riesgo” y dependen en gran medida de las transferencias nacionales, se propone crear un programa de asistencia técnica, dirigido principalmente a los municipios de categoría 6. Este programa debería enfocarse en:
+
+Modernizar los catastros y optimizar el recaudo del impuesto predial, aprovechando los incentivos existentes que premian estas acciones.
+
+Identificar y desarrollar nuevas fuentes de ingresos propios, en función de las particularidades económicas de cada municipio.
+
+Enfocar las acciones por subregiones: El análisis del Índice de Desempeño Fiscal (IDF) muestra patrones espaciales claros. Por tanto, se recomienda:
+
+Diseñar un plan de acción urgente para la subregión oriental y nororiental, donde se concentran los municipios con desempeño en “Deterioro”, para atender las causas estructurales de su crisis fiscal.
+
+Documentar y sistematizar las buenas prácticas de los municipios “Sostenibles” del suroccidente, de manera que sirvan como modelo para otros municipios en “Riesgo”.
+
+Capacitar en presupuestos realistas: El análisis reveló que una alta ejecución del recaudo no siempre refleja una buena planeación. Es fundamental ofrecer formación a las secretarías de hacienda en técnicas de proyección de ingresos y elaboración de presupuestos ajustados a la realidad, evitando así distorsiones que afectan el IDF.
+
+## Para reducir la pobreza y promover el desarrollo social
+
+Atender la informalidad laboral y el rezago educativo: Estas son las dos principales carencias del Índice de Pobreza Multidimensional (IPM) en el departamento. Se recomienda:
+
+Impulsar políticas que fomenten el emprendimiento formal y respalden las economías campesinas y locales, como estrategia para reducir la informalidad, que afecta a cerca del 90 % de los trabajadores.
+
+Articular las políticas sociales y educativas para mejorar el logro escolar en los municipios con mayor rezago educativo.
+
+Dirigir la inversión social al sur y suroccidente del departamento: El mapa del IPM evidencia una concentración preocupante de pobreza en municipios como Rioblanco, Ataco y Coyaima. Es necesario que los programas sociales, tanto departamentales como nacionales, prioricen estas zonas para cerrar las brechas en acceso a salud, educación y servicios básicos.
+
+## Sobre calidad y equidad educativa
+
+Fomentar redes de intercambio entre instituciones educativas: Las instituciones no oficiales presentan, en promedio, mejores resultados y mayor consistencia en su desempeño. Por ello, se sugiere:
+
+Establecer un sistema de mentoría y colaboración entre las instituciones oficiales de mejor y peor rendimiento.
+
+Analizar las prácticas exitosas de las instituciones no oficiales, para adaptar sus estrategias al sector público.
+
+Relacionar los resultados educativos con el contexto socioeconómico: Es recomendable cruzar los mapas de resultados del ICFES con los del IPM y desempeño fiscal, para identificar si los municipios con mayores retos sociales y fiscales son también los de peores resultados educativos. Esto permitiría diseñar programas de refuerzo escolar con un componente de apoyo social integral.
+
+## En planificación territorial y conectividad
+
+Aprovechar el análisis espacial en la planeación de infraestructura: La distancia a la capital es un factor determinante. Se recomienda:
+
+Priorizar inversiones en infraestructura vial y conectividad digital para los municipios más alejados, especialmente los del sur, que combinan lejanía con altos niveles de pobreza.
+
+Integrar los mapas de IPM, IDF, resultados educativos y distancia en un Índice de Priorización Territorial que oriente las inversiones públicas hacia las zonas donde puedan generar mayor impacto.
+
+# Bibliografía
 
 -   AdminIcfes. (2025, 21 marzo). Otros resultados examen Saber 11° - ICFES. ICFES. https://www.icfes.gov.co/evaluaciones-icfes/saber-11/otros-resultados-examen-saber-11/
 
@@ -1303,3 +1373,7 @@ Finalmente, la informalidad laboral se presenta como la carencia más generaliza
 -   Departamento Nacional de Planeación (DNP). (s.f.). Información fiscal y financiera. https://www.dnp.gov.co/LaEntidad\_/subdireccion-general-descentralizacion-desarrollo-territorial/direccion-descentralizacion-fortalecimiento-fiscal/Paginas/informacion-fiscal-y-financiera.aspx
 
 -   DANE. (s.f.). Medida de pobreza multidimensional municipal de fuente censal 2018. https://www.dane.gov.co/index.php/estadisticas-por-tema/pobreza-y-condiciones-de-vida/pobreza-y-desigualdad/medida-de-pobreza-multidimensional-de-fuente-censal
+
+-   Departamento del Tolima. (2021, November 5). ArcGIS StoryMaps. https://storymaps.arcgis.com/stories/2b183e40ba4b49fd9bc59d93d6396ebd
+
+-   Posada, A. R. (2024, October 25). Lista de los 47 municipios de Tolima ordenados por tamaño: ¿Cuál es el más pequeño? Caracol Radio. https://caracol.com.co/2024/10/25/lista-de-los-47-municipios-de-tolima-ordenados-por-tamano-cual-es-el-mas-pequeno/
